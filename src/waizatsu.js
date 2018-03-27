@@ -196,11 +196,11 @@ class TextGarbler {
       }
     }.bind(this))
     .then(() => {
-      // Set the element to the final string (the string supplied by the user)
-      this.setElementsContent(this.trueValue);
-      // Execute the callback
-      this.callback();
-      return;
+      setTimeout(function () {
+        // Execute the callback
+        this.callback();
+        return;
+      }.bind(this), 50);
     });
   }
 
@@ -229,6 +229,7 @@ class TextGarbler {
         // and resolve the promise
         if (charactersRevealed > this.trueValue.length) {
           clearInterval(this.loop);
+          this.setElementsContent(this.trueValue);
           resolve();
         }
       }, 50);
