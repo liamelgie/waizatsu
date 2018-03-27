@@ -9,23 +9,23 @@ An efficient, easy-to-use text garbler, written in vanilla JS.
 - Transition effects
 
 ## Usage
-##### HTML
+#### HTML
 ````
 <h1 id="example-element"></h1>
 `````
-##### JS
+#### JS
 ````Javascript
-    let garble = new TextGarbler(
-      "example-element",
-      "Snape kills Dumbledore ",
-      {
-        transition: "reveal",
-        duration: 5000
-      }
-    );
-    garble.start();
+let garble = new TextGarbler(
+  "example-element",
+  "Snape kills Dumbledore ",
+  {
+    transition: "reveal",
+    duration: 5000
+  }
+);
+garble.start();
 ````
-##### Result
+#### Result
 <p align="center">
   <img alt="Example Output" src="https://i.imgur.com/w7Fki9I.gif">
 </p>
