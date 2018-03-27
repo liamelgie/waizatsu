@@ -11,7 +11,7 @@
     return caps.concat(caps.map(letter => letter.toLowerCase()));
   })();
   /** @const */
-  const EMOJI = ["✌","😂","😝","😁","😱","👉","🙌","🍻","🔥","🌈","☀","🎈","🌹","💄","🎀","⚽","🎾","🏁","😡","👿","🐻","🐶","🐬","🐟","🍀","👀","🚗","🍎","💝","💙","👌","❤","😍","😉","😓","😳","💪","💩","🍸","🔑","💖","🌟","🎉","🌺","🎶","👠","🏈","⚾","🏆","👽","💀","🐵","🐮","🐩","🐎","💣","👃","👂","🍓","💘","💜","👊","💋","😘","😜","😵","🙏","👋","🚽","💃","💎","🚀","🌙","🎁","⛄","🌊","⛵","🏀","🎱","💰","👶","👸","🐰","🐷","🐍","🐫","🔫","👄","🚲","🍉","💛","💚"];
+  const EMOJI = ["✌","😂","😝","😁","😱","👉","🙌","🍻","🔥","🌈","☀","🎈","🌹","💄","🎀","⚽","🎾","🏁","😡","👿","🐻","🐶","🐬","🐟","🍀","👀","🚗","🍎","💝","💙","👌","❤","😍","😉","😓","😳","💪","💩","🍸","🔑","💖","🌟","🎉","🌺","🎶","👠","🏈","⚾","🏆","👽","💀","🐵","🐮","🐩","🐎","💣","👃","👂","🍓","💘","💜","👊","💋","😘","😜","😵","🙏","👋","🚽","💃","💎","🚀","🌙","🎁","⛄","🌊","⛵","🏀","🎱","💰","👶","👸","🐰","🐷","🐍","🐫","🔫","👄","🚲","🍉","💛","💚","🤬"];
   /** @const */
   const NUMBERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
   /** @const */
@@ -28,6 +28,7 @@ class TextGarbler {
     * @param {string} [options.characterSet="alphabet"] The set of characters that will be used to garble the text.
     * @param {Array} [options.customCharacterSet=[]] A set of custom characters that can be used to garble the text.
     * @param {number} [options.duration=null] The length of time (in milliseconds) that the text will be garbled for.
+    * @param {number} [options.refreshEvery=50] The frequency at which the text will scramble. Lower values will increase resource usage but improve smoothness
     * @param {string} [options.stopOn=null] A DOM Event that will call stop() upon firing. This event is listened for on the element that contains the output of garbled text.
     * @param {string} [options.transition="reveal"] The transition style that will be used when text garbling is stopped.
     * @param {boolean} [options.useIntelligentGarbling=false] Whether to generate a random character smartly or ignorantly.
@@ -40,12 +41,23 @@ class TextGarbler {
       characterSet: "alphabet",
       customCharacterSet: [],
       duration: null,
+      refreshEvery: 50,
       stopOn: null,
       transition: "reveal",
       useIntelligentGarbling: false
     },
     callback = () => {}) {
 
+    // Merge defaults with provided options
+    options = Object.assign({}, {
+      characterSet: "alphabet",
+      customCharacterSet: [],
+      duration: null,
+      refreshEvery: 50,
+      stopOn: null,
+      transition: "reveal",
+      useIntelligentGarbling: false
+    }, options);
     // The element/node in which the garbled text will be rendered
     /** @private */
     this.element;
@@ -76,7 +88,9 @@ class TextGarbler {
     // The length of time in which to garble the text for
     /** @private */
     this.duration = options.duration;
-
+    // The frequency at which to garble the text
+    /** @private */
+    this.refreshEvery = options.refreshEvery;
     /** @private */
     this.intelligentGarbling = options.useIntelligentGarbling;
 
@@ -205,14 +219,14 @@ class TextGarbler {
   start() {
     // Signify that the text is currently being garbled
     this.isRunning = true;
-    // Start an interval to garble the text every 50 milliseconds
+    // Start an interval to garble the text
     this.loop = setInterval(() => {
       if (this.intelligentGarbling) {
         this.setElementsContent(this.generateIntelligentlyGarbledString(this.trueValue));
       } else {
         this.setElementsContent(this.generateGarbledString(this.trueValue));
       }
-    }, 50);
+    }, this.refreshEvery);
 
     // If a duration has been given, clear the above interval once it has elapsed
     if (this.duration) {
@@ -250,7 +264,7 @@ class TextGarbler {
         // Execute the callback
         this.callback();
         return;
-      }.bind(this), 50);
+      }.bind(this), this.refreshEvery);
     });
   }
 
@@ -284,7 +298,7 @@ class TextGarbler {
           this.setElementsContent(this.trueValue);
           resolve();
         }
-      }, 50);
+      }, this.refreshEvery);
     }.bind(this));
   }
 
