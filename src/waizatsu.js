@@ -162,7 +162,16 @@ class TextGarbler {
       return garbledSplit.join('');
     }
   }
-
+  /**
+    * Generates a garbled string that matches the character types of the original
+    * string. Whitespace, binary, numbers, symbols and CJK (Chinese, Japanese, Korean)
+    * characters are currently supported. If none of the supported character types
+    * are detected, a random alphabetic character is used instead.
+    * @param {string} stringToGarble String to be garbled.
+    * @param {boolean} [returnAsArray=false] Should the garbled string be split
+    * into an array before returning.
+    * @return {string|Array} An intelligently garbled string or array.
+    */
   generateIntelligentlyGarbledString(stringToGarble, returnAsArray = false) {
     const stringToGarbleSplit = stringToGarble.split('');
     const garbledSplit = [];
@@ -179,7 +188,7 @@ class TextGarbler {
       } else if (/[^-!$%^&*()_+|~=`{}\[\]:";'<>@?,.\/\w\d\s]/.test(character)) {
         garbledSplit.push(this.generateRandomCharacter(CJK));
       } else {
-        garbledSplit.push(this.generateRandomCharacter());
+        garbledSplit.push(this.generateRandomCharacter(ALPHABET));
       }
     }
     if (returnAsArray) {
