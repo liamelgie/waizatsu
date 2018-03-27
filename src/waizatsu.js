@@ -16,9 +16,7 @@
   const NUMBERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
   /** @const */
   const BINARY = ["0", "1"];
-  // A custom character set given by the user
-  /** @const */
-  
+
 class TextGarbler {
   /**
     * @param {Object} element The element that will contain the garbled text.
@@ -27,6 +25,7 @@ class TextGarbler {
     * @param {string} [options.characterSet="alphabet"] The set of characters that will be used to garble the text.
     * @param {Array} [options.customCharacterSet=[]] A set of custom characters that can be used to garble the text.
     * @param {number} [options.duration=null] The length of time (in milliseconds) that the text will be garbled for.
+    * @param {boolean} [options.smartGarble=false] Whether to generate a random character smartly or ignorantly.
     * @param {string} [options.stopOn=null] A DOM Event that will call stop() upon firing. This event is listened for on the element that contains the output of garbled text.
     * @param {string} [options.transition="reveal"] The transition style that will be used when text garbling is stopped.
     * @param {function} [callback] The method that will be called once garbling has stopped.
@@ -74,6 +73,11 @@ class TextGarbler {
     /** @private */
     this.duration = options.duration;
 
+    /** @private */
+    this.smartGarble = options.smartGarble;
+
+    // A custom character set given by the user
+    /** @const */
     const CUSTOM = options.customCharacterSet;
     // The character set to be referenced when garbling text
     /** @private */
@@ -120,7 +124,7 @@ class TextGarbler {
       callback();
     };
   }
-
+  
   /**
     * Sets the element's innerHTML to the given string.
     * @param {string} string The string that will be set to the element's innerHTML.
