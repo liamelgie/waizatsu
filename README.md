@@ -15,7 +15,7 @@ An efficient, easy-to-use text garbler, written in vanilla JS.
 `````
 ##### JS
 ````Javascript
-    new TextGarbler(
+    let garble = new TextGarbler(
       "example-element",
       "Snape kills Dumbledore ",
       {
@@ -23,6 +23,9 @@ An efficient, easy-to-use text garbler, written in vanilla JS.
         duration: 5000
       }
     );
+    garble.start();
 ````
 ##### Result
-![Example Output](https://i.imgur.com/w7Fki9I.gif)
+<p align="center">
+  <img alt="Example Output" src="https://i.imgur.com/w7Fki9I.gif">
+</p>
