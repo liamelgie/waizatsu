@@ -246,10 +246,12 @@ class TextGarbler {
   }
 
   /**
-    * Returns a random number between zero and the length of the chosen character set.
-    * @return {number} A random number
+    * Returns a random number between zero and the given max value.
+    * @param {number} [max=this.characterSet.length] The maximum value that can
+    * generated.
+    * @return {number} A random number.
     */
-  generateRandomInteger() {
-    return Math.floor(Math.random() * Math.floor(this.characterSet.length));
+  generateRandomInteger(max=this.characterSet.length) {
+    return Math.floor(Math.random() * Math.floor(max));
   }
 }
