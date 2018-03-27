@@ -4,6 +4,21 @@
   * @version 0.9.1
   * @module Waizsatsu
   */
+
+  // Arrays of characters to reference when garbling text
+  const ALPHABET = (() => {
+    const caps = [...Array(26)].map((val, i) => String.fromCharCode(i + 65));
+    return caps.concat(caps.map(letter => letter.toLowerCase()));
+  })();
+  /** @const */
+  const EMOJI = ["✌","😂","😝","😁","😱","👉","🙌","🍻","🔥","🌈","☀","🎈","🌹","💄","🎀","⚽","🎾","🏁","😡","👿","🐻","🐶","🐬","🐟","🍀","👀","🚗","🍎","💝","💙","👌","❤","😍","😉","😓","😳","💪","💩","🍸","🔑","💖","🌟","🎉","🌺","🎶","👠","🏈","⚾","🏆","👽","💀","🐵","🐮","🐩","🐎","💣","👃","👂","🍓","💘","💜","👊","💋","😘","😜","😵","🙏","👋","🚽","💃","💎","🚀","🌙","🎁","⛄","🌊","⛵","🏀","🎱","💰","👶","👸","🐰","🐷","🐍","🐫","🔫","👄","🚲","🍉","💛","💚"];
+  /** @const */
+  const NUMBERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+  /** @const */
+  const BINARY = ["0", "1"];
+  // A custom character set given by the user
+  /** @const */
+  
 class TextGarbler {
   /**
     * @param {Object} element The element that will contain the garbled text.
@@ -59,19 +74,6 @@ class TextGarbler {
     /** @private */
     this.duration = options.duration;
 
-    // Arrays of characters to reference when garbling text
-    const ALPHABET = (() => {
-      const caps = [...Array(26)].map((val, i) => String.fromCharCode(i + 65));
-      return caps.concat(caps.map(letter => letter.toLowerCase()));
-    })();
-    /** @const */
-    const EMOJI = ["✌","😂","😝","😁","😱","👉","🙌","🍻","🔥","🌈","☀","🎈","🌹","💄","🎀","⚽","🎾","🏁","😡","👿","🐻","🐶","🐬","🐟","🍀","👀","🚗","🍎","💝","💙","👌","❤","😍","😉","😓","😳","💪","💩","🍸","🔑","💖","🌟","🎉","🌺","🎶","👠","🏈","⚾","🏆","👽","💀","🐵","🐮","🐩","🐎","💣","👃","👂","🍓","💘","💜","👊","💋","😘","😜","😵","🙏","👋","🚽","💃","💎","🚀","🌙","🎁","⛄","🌊","⛵","🏀","🎱","💰","👶","👸","🐰","🐷","🐍","🐫","🔫","👄","🚲","🍉","💛","💚"];
-    /** @const */
-    const NUMBERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-    /** @const */
-    const BINARY = ["0", "1"];
-    // A custom character set given by the user
-    /** @const */
     const CUSTOM = options.customCharacterSet;
     // The character set to be referenced when garbling text
     /** @private */
