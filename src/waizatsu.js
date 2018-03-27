@@ -124,7 +124,7 @@ class TextGarbler {
       callback();
     };
   }
-  
+
   /**
     * Sets the element's innerHTML to the given string.
     * @param {string} string The string that will be set to the element's innerHTML.
@@ -159,6 +159,29 @@ class TextGarbler {
     }
   }
 
+  generateSmartGarbledString(stringToGarble, returnAsArray = false) {
+    const stringToGarbleSplit = stringToGarble.split('');
+    const garbledSplit = [];
+    // Generate a random character for every character in the given string
+    for (let character of stringToGarbleSplit) {
+      if (/\s/.test(character)) {
+        garbledSplit.push(' ');
+      } else if (/[0-1]/.test(character)) {
+        garbledSplit.push(this.generateRandomCharacter(BINARY));
+      } else if (/[0-9]/.test(character)) {
+        garbledSplit.push(this.generateRandomCharacter(NUMBERS));
+      } else {
+        garbledSplit.push(this.generateRandomCharacter());
+      }
+    }
+    if (returnAsArray) {
+      return garbledSplit;
+    } else {
+      // Join the split string and return it
+      return garbledSplit.join('');
+    }
+  }
+
   /** Starts garbling the text. If given in the options, also sets a timeout that
     * stops garbling the text after a duration has elapsed.
     */
@@ -167,7 +190,11 @@ class TextGarbler {
     this.isRunning = true;
     // Start an interval to garble the text every 50 milliseconds
     this.loop = setInterval(() => {
-      this.setElementsContent(this.generateGarbledString(this.trueValue));
+      if (this.smartGarble) {
+        this.setElementsContent(this.generateSmartGarbledString(this.trueValue));
+      } else {
+        this.setElementsContent(this.generateGarbledString(this.trueValue));
+      }
     }, 50);
 
     // If a duration has been given, clear the above interval once it has elapsed
@@ -221,7 +248,9 @@ class TextGarbler {
       // Set a loop to resolve the garbled string to it's true value progressively
       this.loop = setInterval(() => {
         const trueValueSplit = this.trueValue.split('');
-        const garbledSplit = this.generateGarbledString(this.trueValue, true);
+        const garbledSplit = (this.smartGarble
+          ? this.generateSmartGarbledString(this.trueValue, true)
+          : this.generateGarbledString(this.trueValue, true));
         // Overwrite the garbled characters with the true character for those
         // that have been itterated through
         for (let i = 0; i < charactersRevealed; i++) {
