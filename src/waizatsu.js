@@ -28,9 +28,9 @@ class TextGarbler {
     * @param {string} [options.characterSet="alphabet"] The set of characters that will be used to garble the text.
     * @param {Array} [options.customCharacterSet=[]] A set of custom characters that can be used to garble the text.
     * @param {number} [options.duration=null] The length of time (in milliseconds) that the text will be garbled for.
-    * @param {boolean} [options.smartGarble=false] Whether to generate a random character smartly or ignorantly.
     * @param {string} [options.stopOn=null] A DOM Event that will call stop() upon firing. This event is listened for on the element that contains the output of garbled text.
     * @param {string} [options.transition="reveal"] The transition style that will be used when text garbling is stopped.
+    * @param {boolean} [options.useIntelligentGarbling=false] Whether to generate a random character smartly or ignorantly.
     * @param {function} [callback] The method that will be called once garbling has stopped.
     */
   constructor(
@@ -41,7 +41,8 @@ class TextGarbler {
       customCharacterSet: [],
       duration: null,
       stopOn: null,
-      transition: "reveal"
+      transition: "reveal",
+      useIntelligentGarbling: false
     },
     callback = () => {}) {
 
@@ -77,7 +78,7 @@ class TextGarbler {
     this.duration = options.duration;
 
     /** @private */
-    this.smartGarble = options.smartGarble;
+    this.intelligentGarbling = options.useIntelligentGarbling;
 
     // A custom character set given by the user
     /** @const */
@@ -162,7 +163,7 @@ class TextGarbler {
     }
   }
 
-  generateSmartGarbledString(stringToGarble, returnAsArray = false) {
+  generateIntelligentlyGarbledString(stringToGarble, returnAsArray = false) {
     const stringToGarbleSplit = stringToGarble.split('');
     const garbledSplit = [];
     // Generate a random character for every character in the given string
@@ -197,8 +198,8 @@ class TextGarbler {
     this.isRunning = true;
     // Start an interval to garble the text every 50 milliseconds
     this.loop = setInterval(() => {
-      if (this.smartGarble) {
-        this.setElementsContent(this.generateSmartGarbledString(this.trueValue));
+      if (this.intelligentGarbling) {
+        this.setElementsContent(this.generateIntelligentlyGarbledString(this.trueValue));
       } else {
         this.setElementsContent(this.generateGarbledString(this.trueValue));
       }
@@ -255,8 +256,8 @@ class TextGarbler {
       // Set a loop to resolve the garbled string to it's true value progressively
       this.loop = setInterval(() => {
         const trueValueSplit = this.trueValue.split('');
-        const garbledSplit = (this.smartGarble
-          ? this.generateSmartGarbledString(this.trueValue, true)
+        const garbledSplit = (this.intelligentGarbling
+          ? this.generateIntelligentlyGarbledString(this.trueValue, true)
           : this.generateGarbledString(this.trueValue, true));
         // Overwrite the garbled characters with the true character for those
         // that have been itterated through
