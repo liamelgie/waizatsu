@@ -239,10 +239,12 @@ class TextGarbler {
   /**
     * Returns a string containing a random character. This character is selected
     * from the chosen characterSet at a random index.
+    * @param {Array} [characterSet=this.characterSet] The character set that should
+    * be used to generate a random value.
     * @return {string} A single random character.
     */
-  generateRandomCharacter() {
-    return this.characterSet[this.generateRandomInteger()];
+  generateRandomCharacter(characterSet=this.characterSet) {
+    return characterSet[this.generateRandomInteger(characterSet.length)];
   }
 
   /**
