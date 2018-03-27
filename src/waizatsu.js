@@ -116,6 +116,12 @@ class TextGarbler {
       case ("binary"):
         this.characterSet = BINARY;
         break;
+      case ("symbols"):
+        this.characterSet = SYMBOLS;
+        break;
+      case ("CJK"):
+        this.characterSet = CJK;
+        break;
       case ("custom"):
         this.characterSet = CUSTOM;
         break;
