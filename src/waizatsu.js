@@ -11,6 +11,8 @@
     return caps.concat(caps.map(letter => letter.toLowerCase()));
   })();
   /** @const */
+  const AUTO = "AUTO";
+  /** @const */
   const EMOJI = ["✌","😂","😝","😁","😱","👉","🙌","🍻","🔥","🌈","☀","🎈","🌹","💄","🎀","⚽","🎾","🏁","😡","👿","🐻","🐶","🐬","🐟","🍀","👀","🚗","🍎","💝","💙","👌","❤","😍","😉","😓","😳","💪","💩","🍸","🔑","💖","🌟","🎉","🌺","🎶","👠","🏈","⚾","🏆","👽","💀","🐵","🐮","🐩","🐎","💣","👃","👂","🍓","💘","💜","👊","💋","😘","😜","😵","🙏","👋","🚽","💃","💎","🚀","🌙","🎁","⛄","🌊","⛵","🏀","🎱","💰","👶","👸","🐰","🐷","🐍","🐫","🔫","👄","🚲","🍉","💛","💚","🤬"];
   /** @const */
   const NUMBERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
@@ -31,7 +33,6 @@ class TextGarbler {
     * @param {number} [options.refreshEvery=50] The frequency at which the text will scramble. Lower values will increase resource usage but improve smoothness
     * @param {string} [options.stopOn=null] A DOM Event that will call stop() upon firing. This event is listened for on the element that contains the output of garbled text.
     * @param {string} [options.transition="reveal"] The transition style that will be used when text garbling is stopped.
-    * @param {boolean} [options.useIntelligentGarbling=false] Whether to generate a random character smartly or ignorantly.
     * @param {function} [callback] The method that will be called once garbling has stopped.
     */
   constructor(
@@ -44,7 +45,6 @@ class TextGarbler {
       refreshEvery: 50,
       stopOn: null,
       transition: "reveal",
-      useIntelligentGarbling: false
     },
     callback = () => {}) {
 
@@ -56,7 +56,6 @@ class TextGarbler {
       refreshEvery: 50,
       stopOn: null,
       transition: "reveal",
-      useIntelligentGarbling: false
     }, options);
     // The element/node in which the garbled text will be rendered
     /** @private */
@@ -91,8 +90,6 @@ class TextGarbler {
     // The frequency at which to garble the text
     /** @private */
     this.refreshEvery = options.refreshEvery;
-    /** @private */
-    this.intelligentGarbling = options.useIntelligentGarbling;
 
     // A custom character set given by the user
     /** @const */
@@ -104,6 +101,9 @@ class TextGarbler {
      * Defaults to ALPHABET
      */
     switch(options.characterSet) {
+      case ("auto"):
+        this.characterSet = AUTO;
+        break;
       case("alphabet"):
         this.characterSet = ALPHABET;
         break;
@@ -171,44 +171,28 @@ class TextGarbler {
   generateGarbledString(stringToGarble, returnAsArray = false) {
     const stringToGarbleSplit = stringToGarble.split('');
     const garbledSplit = [];
-    // Generate a random character for every character in the given string
-    for (let character of stringToGarbleSplit) {
-      garbledSplit.push(this.generateRandomCharacter());
-    }
-    if (returnAsArray) {
-      return garbledSplit;
+    if (this.characterSet === AUTO) {
+      // Generate a random character for every character in the given string from
+      // the character set that matches the character
+      for (let character of stringToGarbleSplit) {
+        if (/\s/.test(character)) {
+          garbledSplit.push(' ');
+        } else if (/[0-1]/.test(character)) {
+          garbledSplit.push(this.generateRandomCharacter(BINARY));
+        } else if (/[0-9]/.test(character)) {
+          garbledSplit.push(this.generateRandomCharacter(NUMBERS));
+        } else if (/[-!$%^&*()_+|~=`{}\[\]:";'<>@?,.\/]/.test(character)) {
+          garbledSplit.push(this.generateRandomCharacter(SYMBOLS));
+        } else if (/[^-!$%^&*()_+|~=`{}\[\]:";'<>@?,.\/\w\d\s]/.test(character)) {
+          garbledSplit.push(this.generateRandomCharacter(CJK));
+        } else {
+          garbledSplit.push(this.generateRandomCharacter(ALPHABET));
+        }
+      }
     } else {
-      // Join the split string and return it
-      return garbledSplit.join('');
-    }
-  }
-  /**
-    * Generates a garbled string that matches the character types of the original
-    * string. Whitespace, binary, numbers, symbols and CJK (Chinese, Japanese, Korean)
-    * characters are currently supported. If none of the supported character types
-    * are detected, a random alphabetic character is used instead.
-    * @param {string} stringToGarble String to be garbled.
-    * @param {boolean} [returnAsArray=false] Should the garbled string be split
-    * into an array before returning.
-    * @return {string|Array} An intelligently garbled string or array.
-    */
-  generateIntelligentlyGarbledString(stringToGarble, returnAsArray = false) {
-    const stringToGarbleSplit = stringToGarble.split('');
-    const garbledSplit = [];
-    // Generate a random character for every character in the given string
-    for (let character of stringToGarbleSplit) {
-      if (/\s/.test(character)) {
-        garbledSplit.push(' ');
-      } else if (/[0-1]/.test(character)) {
-        garbledSplit.push(this.generateRandomCharacter(BINARY));
-      } else if (/[0-9]/.test(character)) {
-        garbledSplit.push(this.generateRandomCharacter(NUMBERS));
-      } else if (/[-!$%^&*()_+|~=`{}\[\]:";'<>@?,.\/]/.test(character)) {
-        garbledSplit.push(this.generateRandomCharacter(SYMBOLS));
-      } else if (/[^-!$%^&*()_+|~=`{}\[\]:";'<>@?,.\/\w\d\s]/.test(character)) {
-        garbledSplit.push(this.generateRandomCharacter(CJK));
-      } else {
-        garbledSplit.push(this.generateRandomCharacter(ALPHABET));
+      // Generate a random character for every character in the given string
+      for (let character of stringToGarbleSplit) {
+        garbledSplit.push(this.generateRandomCharacter());
       }
     }
     if (returnAsArray) {
@@ -227,11 +211,7 @@ class TextGarbler {
     this.isRunning = true;
     // Start an interval to garble the text
     this.loop = setInterval(() => {
-      if (this.intelligentGarbling) {
-        this.setElementsContent(this.generateIntelligentlyGarbledString(this.trueValue));
-      } else {
-        this.setElementsContent(this.generateGarbledString(this.trueValue));
-      }
+      this.setElementsContent(this.generateGarbledString(this.trueValue));
     }, this.refreshEvery);
 
     // If a duration has been given, clear the above interval once it has elapsed
@@ -285,9 +265,7 @@ class TextGarbler {
       // Set a loop to resolve the garbled string to it's true value progressively
       this.loop = setInterval(() => {
         const trueValueSplit = this.trueValue.split('');
-        const garbledSplit = (this.intelligentGarbling
-          ? this.generateIntelligentlyGarbledString(this.trueValue, true)
-          : this.generateGarbledString(this.trueValue, true));
+        const garbledSplit = this.generateGarbledString(this.trueValue, true);
         // Overwrite the garbled characters with the true character for those
         // that have been itterated through
         for (let i = 0; i < charactersRevealed; i++) {
