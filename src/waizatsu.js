@@ -1,7 +1,7 @@
 /**
   * @fileoverview Garbles text in real-time and resolves it back to its true value on demand.
   * @author Liam Elgie
-  * @version 0.9.1
+  * @version 0.10.5
   * @module Waizsatsu
   */
 
@@ -13,297 +13,322 @@
   /** @const */
   const AUTO = "AUTO";
   /** @const */
-  const EMOJI = ["✌","😂","😝","😁","😱","👉","🙌","🍻","🔥","🌈","☀","🎈","🌹","💄","🎀","⚽","🎾","🏁","😡","👿","🐻","🐶","🐬","🐟","🍀","👀","🚗","🍎","💝","💙","👌","❤","😍","😉","😓","😳","💪","💩","🍸","🔑","💖","🌟","🎉","🌺","🎶","👠","🏈","⚾","🏆","👽","💀","🐵","🐮","🐩","🐎","💣","👃","👂","🍓","💘","💜","👊","💋","😘","😜","😵","🙏","👋","🚽","💃","💎","🚀","🌙","🎁","⛄","🌊","⛵","🏀","🎱","💰","👶","👸","🐰","🐷","🐍","🐫","🔫","👄","🚲","🍉","💛","💚","🤬"];
+  const EMOJI = ["✌","😂","😝","😁","😱","👉","🙌","🍻","🔥","🌈","☀","🎈","🌹","💄",
+  "🎀","⚽","🎾","🏁","😡","👿","🐻","🐶","🐬","🐟","🍀","👀","🚗","🍎","💝","💙","👌",
+  "❤","😍","😉","😓","😳","💪","💩","🍸","🔑","💖","🌟","🎉","🌺","🎶","👠","🏈","⚾",
+  "🏆","👽","💀","🐵","🐮","🐩","🐎","💣","👃","👂","🍓","💘","💜","👊","💋","😘","😜",
+  "😵","🙏","👋","🚽","💃","💎","🚀","🌙","🎁","⛄","🌊","⛵","🏀","🎱","💰","👶","👸",
+  "🐰","🐷","🐍","🐫","🔫","👄","🚲","🍉","💛","💚","🤬"];
   /** @const */
   const NUMBERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
   /** @const */
   const BINARY = ["0", "1"];
   /** @const */
-  const SYMBOLS = ["`", "¬", "\\", "|", "!", "\"", "£", "$", "¢", "#", "¡", "™", "#", "∞", "%", "^", "§", "&", "¶", "*", "•", "ª", "(", ")", "º", "-", "_", "≠", "+", "=", "[", "]", "{", "}", ":", ";", "'", "@", "~", "<", ">", ",", ".", "/", "?", "≥", "≤", "÷"];
+  const SYMBOLS = ["`", "¬", "\\", "|", "!", "\"", "£", "$", "¢", "#", "¡", "™",
+  "#", "∞", "%", "^", "§", "&", "¶", "*", "•", "ª", "(", ")", "º", "-", "_", "≠",
+  "+", "=", "[", "]", "{", "}", ":", ";", "'", "@", "~", "<", ">", ",", ".", "/",
+  "?", "≥", "≤", "÷"];
   /** @const */
-  const CJK = ["以", "ユ", "ル", "ン", "メ", "オ", "他", "鵜", "阿", "シ", "フ", "保", "鵜", "保", "擢", "野", "も", "き", "ほ", "は", "お", "無", "差", "課", "つ", "せ", "ょ", "に", "無", "二", "巣", "と", "樹", "名", "屋", "二", "他", "模", "夜", "模", "ひ", "い", "ゅ", "ゆ", "て", "は", "魔", "擢", "く", "ま", "都", "樹", "樹", "ち", "せ", "ふ", "根", "等", "知", "名", "日", "派", "舳", "列", "絵", "素", "ね", "み", "や", "絵", "く", "む", "の", "鵜", "目", "ヨ", "ク", "モ", "ネ", "む", "ね", "派", "屋", "尾", "他", "他", "ほ", "て", "差", "手", "魔", "擢", "魔", "ん", "手", "他", "舳", "野", "カ", "レ", "ミ", "野", "差", "区", "れ", "し", "せ", "れ", "の", "シ", "ト", "ミ", "カ", "離", "魔", "そ", "ち", "ゆ", "手", "名", "雲", "夜", "ア", "ヌ", "ル", "ー", "以", "野", "っ", "み", "つ", "瀬", "屋", "御", "模", "舳", "素", "ひ", "な", "ぬ", "セ", "ラ", "ス", "チ", "カ", "け", "れ", "よ", "か", "え", "ら", "こ", "野", "よ", "な", "り", "ゅ", "ゅ", "夜", "え", "ょ", "あ", "も", "ね", "増", "給", "像", "再", "西", "窓", "愛", "封", "犯", "検", "掲", "東", "紙", "金", "語", "毎", "米", "資", "承", "都", "設", "正", "膳", "記", "暮", "護", "間", "格", "税", "市", "聞", "付", "十", "新", "進", "式", "職", "掲", "性", "勝", "経", "参", "初", "毎", "仲", "国", "経", "一", "抜", "氏", "管", "欧", "典", "童", "規", "継", "情", "始", "場", "害", "埋", "購", "田", "北", "切", "山", "救", "習", "珈", "先", "責", "着", "会", "固", "題", "日", "度", "就", "冷", "数", "究", "真", "愛", "終", "南", "滞", "再", "見", "公", "薄", "趣", "却", "相", "男", "敗", "啓", "軍", "貞", "金", "全", "校", "浮", "後", "稿", "防", "夜", "集", "含", "毎", "手", "少", "属", "市", "二", "時", "線", "暑", "週", "支", "盗", "来", "訃", "談", "朝", "画", "見", "開", "米", "催", "日", "歩", "議", "対", "協", "議", "福", "疑", "約", "古", "家", "禁", "噛", "校", "来", "持", "百", "실", "로", "주", "며", "그", "들", "에", "게", "더", "운", "지", "라", "가", "지", "에", "예", "가", "놀", "이", "있", "으", "랴", "심", "장", "의", "청", "춘", "의", "살", "용", "기", "가", "설", "산", "에", "서", "위", "하", "여", "광", "야", "에", "서", "평", "화", "스", "러", "운", "보", "라", "수", "끓", "는", "우", "는", "사", "막", "이", "다", "있", "다", "이", "상", "은", "있", "는", "소", "리", "다", "속", "잎", "나", "고", "속", "잎", "나", "고", "온", "갖", "인", "간", "의", "역", "사", "를", "뜨", "거", "운", "지", "라"];
+  const CHINESE = ["増", "給", "像", "再", "西", "窓", "愛", "封", "犯", "検", "掲",
+  "東", "紙", "金", "語", "毎", "米", "資", "承", "都", "設", "正", "膳", "記", "暮",
+  "護", "間", "格", "税", "市", "聞", "付", "十", "新", "進", "式", "職", "掲", "性",
+  "勝", "経", "参", "初", "毎", "仲", "国", "経", "一", "抜", "氏", "管", "欧", "典",
+  "童", "規", "継", "情", "始", "場", "害", "埋", "購", "田", "北", "切", "山", "救",
+  "習", "珈", "先", "責", "着", "会", "固", "題", "日", "度", "就", "冷", "数", "究",
+  "真", "愛", "終", "南", "滞", "再", "見", "公", "薄", "趣", "却", "相", "男", "敗",
+  "啓", "軍", "貞", "金", "全", "校", "浮", "後", "稿", "防", "夜", "集", "含", "毎",
+  "手", "少", "属", "市", "二", "時", "線", "暑", "週", "支", "盗", "来", "訃", "談",
+  "朝", "画", "見", "開", "米", "催", "日", "歩", "議", "対", "協", "議", "福", "疑",
+  "約", "古", "家", "禁", "噛", "校", "来", "持"];
+  /** @const */
+  const JAPANESE = ["以", "ユ", "ル", "ン", "メ", "オ", "他", "鵜", "阿", "シ", "フ",
+  "保", "鵜", "保", "擢", "野", "も", "き", "ほ", "は", "お", "無", "差", "課", "つ",
+  "せ", "ょ", "に", "無", "二", "巣", "と", "樹", "名", "屋", "二", "他", "模", "夜",
+  "模", "ひ", "い", "ゅ", "ゆ", "て", "は", "魔", "擢", "く", "ま", "都", "樹", "樹",
+  "ち", "せ", "ふ", "根", "等", "知", "名", "日", "派", "舳", "列", "絵", "素", "ね",
+  "み", "や", "絵", "く", "む", "の", "鵜", "目", "ヨ", "ク", "モ", "ネ", "む", "ね",
+  "派", "屋", "尾", "他", "他", "ほ", "て", "差", "手", "魔", "擢", "魔", "ん", "手",
+  "他", "舳", "野", "カ", "レ", "ミ", "野", "差", "区", "れ", "し", "せ", "れ", "の",
+  "シ", "ト", "ミ", "カ", "離", "魔", "そ", "ち", "ゆ", "手", "名", "雲", "夜", "ア",
+  "ヌ", "ル", "ー", "以", "野", "っ", "み", "つ", "瀬", "屋", "御", "模", "舳", "素",
+  "ひ", "な", "ぬ", "セ", "ラ", "ス", "チ", "カ", "け", "れ", "よ", "か", "え", "ら",
+  "こ", "野", "よ", "な", "り", "ゅ", "ゅ", "夜", "え", "ょ", "あ", "も", "ね"];
+  /** @const */
+  const KOREAN = ["百", "실", "로", "주", "며", "그", "들", "에", "게", "더", "운", "지",
+  "라", "가", "지", "에", "예", "가", "놀", "이", "있", "으", "랴", "심", "장", "의", "청",
+  "춘", "의", "살", "용", "기", "가", "설", "산", "에", "서", "위", "하", "여", "광", "야",
+  "에", "서", "평", "화", "스", "러", "운", "보", "라", "수", "끓", "는", "우", "는", "사",
+  "막", "이", "다", "있", "다", "이", "상", "은", "있", "는", "소", "리", "다", "속", "잎",
+  "나", "고", "속", "잎", "나", "고", "온", "갖", "인", "간", "의", "역", "사", "를", "뜨",
+  "거", "운", "지", "라"];
+  /** @const */
+  const CJK = CHINESE.concat(JAPANESE, KOREAN);
+
 class TextGarbler {
   /**
-    * @param {Object} element The element that will contain the garbled text.
-    * @param {string} trueValue The text that will be garbled.
+    * @param {string} baseString The text that will be garbled.
     * @param {Object} [options] Options that control how the class will perform.
-    * @param {string} [options.characterSet="alphabet"] The set of characters that will be used to garble the text.
+    * @param {string|Array} [options.characterSet="alphabet"] The set of characters that will be used to garble the text.
     * @param {Array} [options.customCharacterSet=[]] A set of custom characters that can be used to garble the text.
-    * @param {number} [options.duration=null] The length of time (in milliseconds) that the text will be garbled for.
     * @param {number} [options.refreshEvery=50] The frequency at which the text will scramble. Lower values will increase resource usage but improve smoothness
-    * @param {string} [options.stopOn=null] A DOM Event that will call stop() upon firing. This event is listened for on the element that contains the output of garbled text.
-    * @param {string} [options.transition="reveal"] The transition style that will be used when text garbling is stopped.
-    * @param {function} [callback] The method that will be called once garbling has stopped.
     */
-  constructor(
-    element,
-    trueValue,
-    options = {
-      characterSet: "alphabet",
-      customCharacterSet: [],
-      duration: null,
-      refreshEvery: 50,
-      stopOn: null,
-      transition: "reveal",
-    },
-    callback = () => {}) {
-
-    // Merge defaults with provided options
+  constructor(baseString, options) {
+    // Merge defaults with given options
     options = Object.assign({}, {
       characterSet: "alphabet",
       customCharacterSet: [],
-      duration: null,
       refreshEvery: 50,
-      stopOn: null,
-      transition: "reveal",
     }, options);
-    // The element/node in which the garbled text will be rendered
+
+    // Define events
     /** @private */
-    this.element;
-    /* Find and store the element/node
-     * Supports strings and objects (Element object)
-     * Defaults to null
-     * If null, an error will be thrown as the class cannot function without it
-     */
-    switch(typeof element) {
-      case("string"):
-        this.element = document.getElementById(element);
-        break;
-      case("object"):
-        this.element = element;
-        break;
-      default:
-        this.element = null;
-        console.error("A valid element was not provided or the given ID does not match any elements within the DOM");
-        throw Error("Cannot perform operations on null. Please provide a valid element or element ID.");
-        break;
-    }
-    // The string to be garbled
+    this.onGarble;
     /** @private */
-    this.trueValue = trueValue;
-    // The name of the transition that will be used to resolve to the final string
+    this.onStart;
     /** @private */
-    this.transition = options.transition;
-    // The length of time in which to garble the text for
+    this.onStop;
     /** @private */
-    this.duration = options.duration;
-    // The frequency at which to garble the text
+    this.onTransitionBegin;
+    /** @private */
+    this.onTransitionEnd;
+
+    /** @private */
+    this.value;
+    /** @private */
+    this.baseString = baseString;
     /** @private */
     this.refreshEvery = options.refreshEvery;
-
     // A custom character set given by the user
     /** @const */
     const CUSTOM = options.customCharacterSet;
     // The character set to be referenced when garbling text
     /** @private */
-    this.characterSet;
-    /* Finds and stores the character set specified by the user
-     * Defaults to ALPHABET
-     */
-    switch(options.characterSet) {
-      case ("auto"):
-        this.characterSet = AUTO;
-        break;
-      case("alphabet"):
-        this.characterSet = ALPHABET;
-        break;
-      case("emoji"):
-        this.characterSet = EMOJI;
-        break;
-      case ("numbers"):
-        this.characterSet = NUMBERS;
-        break;
-      case ("binary"):
-        this.characterSet = BINARY;
-        break;
-      case ("symbols"):
-        this.characterSet = SYMBOLS;
-        break;
-      case ("CJK"):
-        this.characterSet = CJK;
-        break;
-      case ("custom"):
-        this.characterSet = CUSTOM;
-        break;
-      default:
-        this.characterSet = ALPHABET;
-        break;
-    }
+    this.characterSet = (() => {
+      if (options.characterSet) {
+        if (typeof options.characterSet === "object") {
+          let combinedSet = [];
+          for (let set of options.characterSet) {
+            if (["AUTO", "ALPHABET", "NUMBERS", "EMOJI", "BINARY", "SYMBOLS", "CHINESE", "JAPANESE", "KOREAN", "CUSTOM"].includes(set.toUpperCase())) {
+              if (set === "AUTO") {
+                return AUTO;
+              }
+              combinedSet = combinedSet.concat(eval(set.toUpperCase()));
+            }
+          }
+          return combinedSet;
+        } else if (typeof options.characterSet === "string") {
+          if (!["AUTO", "ALPHABET", "NUMBERS", "EMOJI", "BINARY", "SYMBOLS", "CHINESE", "JAPANESE", "KOREAN", "CUSTOM"].includes(options.characterSet.toUpperCase())) {
+            console.error(`${options.characterSet} is not a valid character set. Use one of the following: \n
+            AUTO, ALPHABET, NUMBERS, EMOJI, BINARY, SYMBOLS, CHINESE, JAPANESE, KOREAN or CUSTOM.`);
+            // Fallback to ALPHABET
+            return ALPHABET;
+          } else {
+            return eval(options.characterSet.toUpperCase());
+          }
+        }
+      }
+    })();
+
     // A boolean to show whether the text is currently being garbled
     /** @private */
-    this.isRunning = false;
-    // If a stopOn event has been given, set the listerner
-    if (options.stopOn) {
-      this.element.addEventListener(options.stopOn, (e) => {
-        // Only call stop if text is currently being garbled
-        // This prevents the event from repeatedly calling the stop method
-        if (this.isRunning) {
-          this.stop();
-        }
-      }, false);
-    }
-    // The callback that will be called once the text has stopped being garbled
-    /** @private */
-    this.callback = () => {
-      callback();
-    };
+    this.active;
+
   }
 
-  /**
-    * Sets the element's innerHTML to the given string.
-    * @param {string} string The string that will be set to the element's innerHTML.
+  /** Assigns a method to be called once a specified event is fired.
+    * @param {string} event The event that will trigger the callback.
+    * @param {function} callback The method that will be called.
     */
-  setElementsContent(string) {
-    this.element.innerHTML = string;
+  on(event, callback) {
+    switch(event) {
+      case "garble":
+        // Returns the garbled text so that it can be manipulated
+        this.onGarble = () => {
+          callback(this.value);
+        };
+        break;
+      case "start":
+        this.onStart = callback;
+        break;
+      case "stop":
+        this.onStop = callback;
+        break;
+      case "transitionBegin":
+        this.onTransitionBegin = callback;
+        break;
+      case "transitionEnd":
+        this.onTransitionEnd = callback;
+        break;
+      default:
+        null
+    }
     return;
   }
 
-  /**
-    * Generates a garbled string. This string matches the given string in
-    * length and uses the character set given in the options. Returns either a
-    * string or an array containing the split string depending on the returnAsArray
-    * parameter.
-    * @param {string} stringToGarble String to be garbled.
-    * @param {boolean} [returnAsArray=false] Split the garbled string into an
-    * array before returning.
-    * @return {string|Array} A garbled string or array.
+  /** Garble the string using the chosen character set and return it as either a
+    * string or array (as determined by the returnArray parameter).
+    * Fires the 'garble' event before returning.
+    * If the characterSet is set to AUTO, each character will be replaced with a
+    * character of the same type. i.e. a number will be replaced with a random
+    * number, a symbol will be replaced by a random symbol, a CJK character will
+    * be replaced by a random CJK character.
+    * Due to issues with language detection, any Chinese, Japanese or Korean
+    * character will be replaced by any CJK character.
+    * @param {string} string The string that will be garbled.
+    * @param {boolean} returnArray Return the garbled text split into an array.
+    * Otherwise, return it as a string.
+    * @return {string|Array} The garbled text, either as a string or split into
+    * an array.
     */
-  generateGarbledString(stringToGarble, returnAsArray = false) {
-    const stringToGarbleSplit = stringToGarble.split('');
-    const garbledSplit = [];
+  garble(string, returnArray) {
+    const splitString = string.split('');
+    const splitGarbledString = [];
     if (this.characterSet === AUTO) {
       // Generate a random character for every character in the given string from
       // the character set that matches the character
-      for (let character of stringToGarbleSplit) {
+      for (let character of splitString) {
         if (/\s/.test(character)) {
-          garbledSplit.push(' ');
+          splitGarbledString.push(' ');
         } else if (/[0-1]/.test(character)) {
-          garbledSplit.push(this.generateRandomCharacter(BINARY));
+          splitGarbledString.push(generateRandomCharacter(BINARY));
         } else if (/[0-9]/.test(character)) {
-          garbledSplit.push(this.generateRandomCharacter(NUMBERS));
+          splitGarbledString.push(generateRandomCharacter(NUMBERS));
         } else if (/[-!$%^&*()_+|~=`{}\[\]:";'<>@?,.\/]/.test(character)) {
-          garbledSplit.push(this.generateRandomCharacter(SYMBOLS));
+          splitGarbledString.push(generateRandomCharacter(SYMBOLS));
         } else if (/[^-!$%^&*()_+|~=`{}\[\]:";'<>@?,.\/\w\d\s]/.test(character)) {
-          garbledSplit.push(this.generateRandomCharacter(CJK));
+          splitGarbledString.push(generateRandomCharacter(CJK));
         } else {
-          garbledSplit.push(this.generateRandomCharacter(ALPHABET));
+          splitGarbledString.push(generateRandomCharacter(ALPHABET));
         }
       }
     } else {
       // Generate a random character for every character in the given string
-      for (let character of stringToGarbleSplit) {
-        garbledSplit.push(this.generateRandomCharacter());
+      for (let character of splitString) {
+        splitGarbledString.push(generateRandomCharacter(this.characterSet));
       }
     }
-    if (returnAsArray) {
-      return garbledSplit;
+    if (returnArray) {
+      return splitGarbledString;
     } else {
+      // Fire the garble event
+      if (this.onGarble) {
+        this.onGarble();
+      }
       // Join the split string and return it
-      return garbledSplit.join('');
+      return splitGarbledString.join('');
     }
   }
 
-  /** Starts garbling the text. If given in the options, also sets a timeout that
-    * stops garbling the text after a duration has elapsed.
+  /** Start garbling the text. Fires the 'start' event once called. This method
+    * is only executed if the text is not currently being garbled.
     */
   start() {
-    // Signify that the text is currently being garbled
-    this.isRunning = true;
-    // Start an interval to garble the text
-    this.loop = setInterval(() => {
-      this.setElementsContent(this.generateGarbledString(this.trueValue));
-    }, this.refreshEvery);
-
-    // If a duration has been given, clear the above interval once it has elapsed
-    if (this.duration) {
-      setTimeout(() => {
-        // Only call stop if the text is currently being garbled
-        if (this.isRunning) this.stop();
-      }, this.duration);
+    if (!this.active) {
+      if (this.onStart) {
+        this.onStart();
+      }
+      // Signify that the text is currently being garbled
+      this.active = true;
+      // Start an interval to garble the text
+      this.loop = setInterval(() => {
+        this.value = this.garble(this.baseString);
+      }, this.refreshEvery);
+      return;
     }
-
-    return;
   }
 
-  /** Stops garbling the text, initiates the transiton to the final string and
-    * then triggers the callback.
+  /** Stop garbling the text and transition to the base string. Fires the 'stop'
+    * event once called and the 'transitionEnd' event once the transition has
+    * completed.
+    * This method is only executed if the text is currently being garbled.
+    * @return {boolean} True once the transition has completed. False if the text
+    * is not currently being garbled.
     */
   stop() {
-    // Signify that the text is no longer being garbled
-    this.isRunning = false;
-    // Clear the loop to prevent the string from being garbled indefinitely
-    clearInterval(this.loop);
-    /* Execute the transition
-     * The execution is wrapped in a promise to ensure that the callback is
-     * executed after the transition phase has ended
-     */
-    let exitTransition = new Promise(function(resolve, reject) {
-      if (this.transition === "reveal") {
-        this.reveal()
-        .then(() => {resolve()});
-      } else {
-        reject();
+    if (this.active) {
+      if (this.onStop) {
+        this.onStop();
       }
-    }.bind(this))
-    .then(() => {
-      setTimeout(function () {
-        // Execute the callback
-        this.callback();
-        return;
-      }.bind(this), this.refreshEvery);
-    });
+      // Signify that the text is no longer being garbled
+      this.active = false;
+      // Clear the loop to prevent the string from being garbled indefinitely
+      clearInterval(this.loop);
+      /* Transition from garbled text to the base string. The transitionEnd event
+       * is fired once the promise is resolved.
+       */
+      this.transition()
+      .then(() => {
+          if (this.onTransitionEnd) {
+            this.onTransitionEnd();
+          }
+          return true;
+      });
+    } else {
+      return false;
+    }
   }
 
-  /**
-    * A transiton effect that reveals the final string one character at a time.
+  /** Smoothly transitions the garbled text to the base string.
+    * Fires the 'transitionBegin' event once called.
     * @return {Promise} A promise that is resolved once the transition is complete.
     */
-  reveal() {
+  transition() {
     return new Promise(function(resolve, reject) {
+      // Fire the transitionBegin event
+      if (this.onTransitionBegin) {
+        this.onTransitionBegin();
+      }
       // Track how many characters we have revealed so far
       let charactersRevealed = 0;
       // Set a loop to resolve the garbled string to it's true value progressively
-      this.loop = setInterval(() => {
-        const trueValueSplit = this.trueValue.split('');
-        const garbledSplit = this.generateGarbledString(this.trueValue, true);
+      let loop = setInterval(() => {
+        const splitBaseString = this.baseString.split('');
+        const splitGarbledString = this.garble(this.baseString, true);
         // Overwrite the garbled characters with the true character for those
         // that have been itterated through
         for (let i = 0; i < charactersRevealed; i++) {
-          garbledSplit[i] = trueValueSplit[i];
+          splitGarbledString[i] = splitBaseString[i];
         }
-        // Set the element to the partially garbled string
-        this.setElementsContent(garbledSplit.join(''));
-        // Increment the amount of characters that have been revealed
+        // Assign the joined string and fire the garble event
+        this.value = splitGarbledString.join('');
+        if (this.onGarble) {
+          this.onGarble();
+        }
+        // Increment
         charactersRevealed++;
         // Once the entire string has been itterated through, clear the interval
         // and resolve the promise
-        if (charactersRevealed > this.trueValue.length) {
-          clearInterval(this.loop);
-          this.setElementsContent(this.trueValue);
+        if (charactersRevealed > this.baseString.length) {
+          clearInterval(loop);
+          this.value = this.baseString;
+          // Fire the garble event
+          if (this.onGarble) {
+            this.onGarble();
+          }
           resolve();
         }
       }, this.refreshEvery);
     }.bind(this));
   }
+}
 
-  /**
-    * Returns a string containing a random character. This character is selected
-    * from the chosen characterSet at a random index.
-    * @param {Array} [characterSet=this.characterSet] The character set that should
-    * be used to generate a random value.
-    * @return {string} A single random character.
-    */
-  generateRandomCharacter(characterSet=this.characterSet) {
-    return characterSet[this.generateRandomInteger(characterSet.length)];
-  }
+/**
+  * Returns a string containing a random character. This character is selected
+  * from the chosen characterSet at a random index.
+  * @param {Array} characterSet The character set that should
+  * be used to generate a random value.
+  * @return {string} A single random character.
+  */
+function generateRandomCharacter(characterSet) {
+  return characterSet[generateRandomInteger(characterSet.length)];
+}
 
-  /**
-    * Returns a random number between zero and the given max value.
-    * @param {number} [max=this.characterSet.length] The maximum value that can
-    * generated.
-    * @return {number} A random number.
-    */
-  generateRandomInteger(max=this.characterSet.length) {
-    return Math.floor(Math.random() * Math.floor(max));
-  }
+/**
+  * Returns a random number between zero and the given max value.
+  * @param {number} max The maximum value that can
+  * generated.
+  * @return {number} A random number.
+  */
+function generateRandomInteger(max) {
+  return Math.floor(Math.random() * Math.floor(max));
 }

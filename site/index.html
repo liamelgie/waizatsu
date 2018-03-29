@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<head>
+  <title>猥雑 Waizatsu</title>
+  <meta charset="utf-8">
+  <script type="text/javascript" src="../src/waizatsu.js"></script>
+  <link rel="stylesheet" href="css/stylesheet.css">
+</head>
+<body>
+  <header>
+    <div>
+      <a href="">Get started</a>
+      <a href="https://github.com/liamelgie/waizatsu">GitHub</a>
+    </div>
+  </header>
+  <div style="display:flex;justify-content:center;align-items:center;width:100%;height:100%;">
+    <div class="center-container">
+      <a href="https://github.com/liamelgie/waizatsu"><h1 id="example-element"></h1></a>
+    </div>
+  </div>
+  <footer>
+      <div class="watermark">
+        <a href="https://github.com/liamelgie">Made with <span id="heart" class="heart">♥</span> by Liam Elgie</a>
+      </div>
+  </footer>
+  <script>
+    let garbler = new TextGarbler(
+      "猥雑 Waizatsu",
+      {
+        refreshEvery: 40,
+        characterSet: "auto",
+      }
+    );
+    garbler.on("start", () => {
+      console.log("started");
+      document.getElementById("example-element").classList.remove("done");
+    });
+    garbler.on("stop", () => {
+      console.log("stop");
+    });
+    garbler.on("garble", (value) => {
+      document.getElementById("example-element").innerHTML = value;
+    });
+    garbler.on("transitionBegin", () => {
+      document.getElementById("example-element").classList.add("done");
+    });
+    document.getElementById("example-element").addEventListener("mouseenter", () => {
+      garbler.stop();
+    });
+    document.getElementById("example-element").addEventListener("mouseleave", () => {
+      garbler.start();
+    });
+    garbler.start();
+  </script>
+</body>
