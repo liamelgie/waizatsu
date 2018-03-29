@@ -68,6 +68,7 @@ class TextGarbler {
   /**
     * @param {string} baseString The text that will be garbled.
     * @param {Object} [options] Options that control how the class will perform.
+    * @param {boolean} [options.caseSensitive=false] Should the garbled text maintain the base string's case.
     * @param {string|Array} [options.characterSet="alphabet"] The set of characters that will be used to garble the text.
     * @param {Array} [options.customCharacterSet=[]] A set of custom characters that can be used to garble the text.
     * @param {number} [options.refreshEvery=50] The frequency at which the text will scramble. Lower values will increase resource usage but improve smoothness
@@ -75,6 +76,7 @@ class TextGarbler {
   constructor(baseString, options) {
     // Merge defaults with given options
     options = Object.assign({}, {
+      caseSensitive: false,
       characterSet: "alphabet",
       customCharacterSet: [],
       refreshEvery: 50,
