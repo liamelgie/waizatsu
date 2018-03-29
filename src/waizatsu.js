@@ -68,7 +68,7 @@ class TextGarbler {
   /**
     * @param {string} baseString The text that will be garbled.
     * @param {Object} [options] Options that control how the class will perform.
-    * @param {boolean} [options.caseSensitive=false] Should the garbled text maintain the base string's case.
+    * @param {boolean} [options.caseSensitive=false] Whether the garbled text should maintain the base string's case.
     * @param {string|Array} [options.characterSet="alphabet"] The set of characters that will be used to garble the text.
     * @param {Array} [options.customCharacterSet=[]] A set of custom characters that can be used to garble the text.
     * @param {number} [options.refreshEvery=50] The frequency at which the text will scramble. Lower values will increase resource usage but improve smoothness
@@ -98,6 +98,8 @@ class TextGarbler {
     this.value;
     /** @private */
     this.baseString = baseString;
+    /** @private */
+    this.caseSensitive = options.caseSensitive;
     /** @private */
     this.refreshEvery = options.refreshEvery;
     // A custom character set given by the user
@@ -188,25 +190,48 @@ class TextGarbler {
     if (this.characterSet === AUTO) {
       // Generate a random character for every character in the given string from
       // the character set that matches the character
+      let garbledCharacter;
       for (let character of splitString) {
         if (/\s/.test(character)) {
-          splitGarbledString.push(' ');
+          garbledCharacter = ' ';
         } else if (/[0-1]/.test(character)) {
-          splitGarbledString.push(generateRandomCharacter(BINARY));
+          garbledCharacter = generateRandomCharacter(BINARY);
         } else if (/[0-9]/.test(character)) {
-          splitGarbledString.push(generateRandomCharacter(NUMBERS));
+          garbledCharacter = generateRandomCharacter(NUMBERS);
         } else if (/[-!$%^&*()_+|~=`{}\[\]:";'<>@?,.\/]/.test(character)) {
-          splitGarbledString.push(generateRandomCharacter(SYMBOLS));
+          garbledCharacter = generateRandomCharacter(SYMBOLS);
         } else if (/[^-!$%^&*()_+|~=`{}\[\]:";'<>@?,.\/\w\d\s]/.test(character)) {
-          splitGarbledString.push(generateRandomCharacter(CJK));
+          garbledCharacter = generateRandomCharacter(CJK);
         } else {
-          splitGarbledString.push(generateRandomCharacter(ALPHABET));
+          garbledCharacter = generateRandomCharacter(ALPHABET);
         }
+        // If the caseSensitive flag was given, test the case of the original character
+        // and match it.
+        if (this.caseSensitive) {
+          if (/[a-z]/.test(character)) {
+            garbledCharacter = garbledCharacter.toLowerCase();
+          } else if (/[A-Z]/.test(character)) {
+            garbledCharacter = garbledCharacter.toUpperCase();
+          }
+        }
+        // Push the garbled character into the array
+        splitGarbledString.push(garbledCharacter);
       }
     } else {
       // Generate a random character for every character in the given string
       for (let character of splitString) {
-        splitGarbledString.push(generateRandomCharacter(this.characterSet));
+        let garbledCharacter = generateRandomCharacter(this.characterSet);
+        // If the caseSensitive flag was given, test the case of the original character
+        // and match it.
+        if (this.caseSensitive) {
+          if (/[a-z]/.test(character)) {
+            garbledCharacter.toLowerCase();
+          } else if (/[A-Z]/.test(character)) {
+            garbledCharacter.toUpperCase();
+          }
+        }
+        // Push the garbled character into the array
+        splitGarbledString.push(garbledCharacter);
       }
     }
     if (returnArray) {
