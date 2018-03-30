@@ -99,10 +99,12 @@ class TextGarbler {
     /** @private */
     this.baseString = baseString;
     /** @private */
+    this.active;
+    /** @private */
     this.caseSensitive = options.caseSensitive;
     /** @private */
     this.refreshEvery = options.refreshEvery;
-    // A custom character set given by the user
+    // The custom character set given by the user
     /** @const */
     const CUSTOM = options.customCharacterSet;
     // The character set to be referenced when garbling text
@@ -132,11 +134,6 @@ class TextGarbler {
         }
       }
     })();
-
-    // A boolean to show whether the text is currently being garbled
-    /** @private */
-    this.active;
-
   }
 
   /** Assigns a method to be called once a specified event is fired.
