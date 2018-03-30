@@ -61,7 +61,6 @@ div.watermark a .heart {
   color: #fafafa;
   transition: 400ms ease-in-out;
   display: inline-block;
-  width: 13px;
 }
 
 div.watermark a:hover .heart {
@@ -80,7 +79,7 @@ div.watermark a:hover .heart {
 #example-element {
   color: #fafafa;
   text-align: center;
-  font-size: 4.8em;
+  font-size: 6em;
   padding: 0;
   margin: -50px 0 0;
   transition: color 1s ease-in-out;
@@ -89,5 +88,5 @@ div.watermark a:hover .heart {
 
 #example-element.done {
   color: white;
-  font-size: 5.5em;
+  font-size: 6.5em;
 }
