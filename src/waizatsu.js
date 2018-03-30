@@ -66,14 +66,14 @@
 
 class TextGarbler {
   /**
-    * @param {string} baseString The text that will be garbled.
+    * @param {string} base The text that will be garbled.
     * @param {Object} [options] Options that control how the class will perform.
     * @param {boolean} [options.caseSensitive=false] Whether the garbled text should maintain the base string's case.
     * @param {string|Array} [options.characterSet="alphabet"] The set of characters that will be used to garble the text.
     * @param {Array} [options.customCharacterSet=[]] A set of custom characters that can be used to garble the text.
     * @param {number} [options.refreshEvery=50] The frequency at which the text will scramble. Lower values will increase resource usage but improve smoothness
     */
-  constructor(baseString, options) {
+  constructor(base, options) {
     // Merge defaults with given options
     options = Object.assign({}, {
       caseSensitive: false,
@@ -97,7 +97,7 @@ class TextGarbler {
     /** @private */
     this.value;
     /** @private */
-    this.baseString = baseString;
+    this.base = base;
     /** @private */
     this.active;
     /** @private */
@@ -134,6 +134,9 @@ class TextGarbler {
         }
       }
     })();
+
+    // Garble the string once so that value does not equal the base string
+    this.garble(this.base);
   }
 
   /** Assigns a method to be called once a specified event is fired.
@@ -255,7 +258,7 @@ class TextGarbler {
       this.active = true;
       // Start an interval to garble the text
       this.loop = setInterval(() => {
-        this.value = this.garble(this.baseString);
+        this.value = this.garble(this.base);
       }, this.refreshEvery);
       return;
     }
@@ -306,12 +309,12 @@ class TextGarbler {
       let charactersRevealed = 0;
       // Set a loop to resolve the garbled string to it's true value progressively
       let loop = setInterval(() => {
-        const splitBaseString = this.baseString.split('');
-        const splitGarbledString = this.garble(this.baseString, true);
+        const splitbase = this.base.split('');
+        const splitGarbledString = this.garble(this.base, true);
         // Overwrite the garbled characters with the true character for those
         // that have been itterated through
         for (let i = 0; i < charactersRevealed; i++) {
-          splitGarbledString[i] = splitBaseString[i];
+          splitGarbledString[i] = splitbase[i];
         }
         // Assign the joined string and fire the garble event
         this.value = splitGarbledString.join('');
@@ -322,9 +325,9 @@ class TextGarbler {
         charactersRevealed++;
         // Once the entire string has been itterated through, clear the interval
         // and resolve the promise
-        if (charactersRevealed > this.baseString.length) {
+        if (charactersRevealed > this.base.length) {
           clearInterval(loop);
-          this.value = this.baseString;
+          this.value = this.base;
           // Fire the garble event
           if (this.onGarble) {
             this.onGarble();
