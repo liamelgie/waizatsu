@@ -94,9 +94,51 @@ class TextGarbler {
     /** @private */
     this.onTransitionEnd;
 
+    /** @private */
+    this.value;
+    /** @private */
+    this.base = base;
+    /** @private */
+    this.caseSensitive = options.caseSensitive;
+    // The custom character set given by the user
+    /** @const */
+    const CUSTOM = options.customCharacterSet;
+    // The character set to be referenced when garbling text
+    /** @private */
+    this.characterSet = (() => {
+      if (options.characterSet) {
+        if (typeof options.characterSet === "object") {
+          let combinedSet = [];
+          for (let set of options.characterSet) {
+            if (["AUTO", "ALPHABET", "NUMBERS", "EMOJI", "BINARY", "SYMBOLS", "CHINESE", "JAPANESE", "KOREAN", "CUSTOM"].includes(set.toUpperCase())) {
+              if (set === "AUTO") {
+                return AUTO;
+              }
+              combinedSet = combinedSet.concat(eval(set.toUpperCase()));
+            }
+          }
+          return combinedSet;
+        } else if (typeof options.characterSet === "string") {
+          if (!["AUTO", "ALPHABET", "NUMBERS", "EMOJI", "BINARY", "SYMBOLS", "CHINESE", "JAPANESE", "KOREAN", "CUSTOM"].includes(options.characterSet.toUpperCase())) {
+            console.error(`${options.characterSet} is not a valid character set. Use one of the following: \n
+            AUTO, ALPHABET, NUMBERS, EMOJI, BINARY, SYMBOLS, CHINESE, JAPANESE, KOREAN or CUSTOM.`);
+            // Fallback to ALPHABET
+            return ALPHABET;
+          } else {
+            return eval(options.characterSet.toUpperCase());
+          }
+        }
+      }
+    })();
+
+    /** Contains the methods and properties for the controlling of the loop feature.
+      * This feature repeatedly garbles the text at a given interval.
+      */
+    /** @public */
     this.loop = {
       isActive: false,
       milliseconds: options.refreshEvery,
+      /** Starts the loop. */
       start: () => {
         if (this.onStart) {
           this.onStart();
@@ -112,6 +154,7 @@ class TextGarbler {
         }, this.loop.milliseconds);
         return;
       },
+      /** Stops the loop. */
       stop: () => {
         if (this.loop.isActive) {
           if (this.onStop) {
@@ -135,6 +178,7 @@ class TextGarbler {
           return false;
         }
       },
+      /** Transitions between a garbled and base string */
       transition: () => {
         return new Promise(function(resolve, reject) {
           // Fire the transitionBegin event
@@ -174,43 +218,6 @@ class TextGarbler {
         }.bind(this));
       }
     }
-
-    /** @private */
-    this.value;
-    /** @private */
-    this.base = base;
-    /** @private */
-    this.caseSensitive = options.caseSensitive;
-    // The custom character set given by the user
-    /** @const */
-    const CUSTOM = options.customCharacterSet;
-    // The character set to be referenced when garbling text
-    /** @private */
-    this.characterSet = (() => {
-      if (options.characterSet) {
-        if (typeof options.characterSet === "object") {
-          let combinedSet = [];
-          for (let set of options.characterSet) {
-            if (["AUTO", "ALPHABET", "NUMBERS", "EMOJI", "BINARY", "SYMBOLS", "CHINESE", "JAPANESE", "KOREAN", "CUSTOM"].includes(set.toUpperCase())) {
-              if (set === "AUTO") {
-                return AUTO;
-              }
-              combinedSet = combinedSet.concat(eval(set.toUpperCase()));
-            }
-          }
-          return combinedSet;
-        } else if (typeof options.characterSet === "string") {
-          if (!["AUTO", "ALPHABET", "NUMBERS", "EMOJI", "BINARY", "SYMBOLS", "CHINESE", "JAPANESE", "KOREAN", "CUSTOM"].includes(options.characterSet.toUpperCase())) {
-            console.error(`${options.characterSet} is not a valid character set. Use one of the following: \n
-            AUTO, ALPHABET, NUMBERS, EMOJI, BINARY, SYMBOLS, CHINESE, JAPANESE, KOREAN or CUSTOM.`);
-            // Fallback to ALPHABET
-            return ALPHABET;
-          } else {
-            return eval(options.characterSet.toUpperCase());
-          }
-        }
-      }
-    })();
 
     // Garble the string once so that value does not equal the base string
     this.garble(this.base);
