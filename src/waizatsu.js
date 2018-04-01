@@ -98,26 +98,25 @@ class TextGarbler {
       isActive: false,
       milliseconds: options.refreshEvery,
       start: () => {
-        if (!this.active) {
-          if (this.onStart) {
-            this.onStart();
-          }
-          // Signify that the text is currently being garbled
-          this.active = true;
-          // Start an interval to garble the text
-          this.loop.interval = setInterval(() => {
-            this.value = this.garble(this.base);
-          }, this.loop.milliseconds);
-          return;
+        if (this.onStart) {
+          this.onStart();
         }
+        if (this.loop.isActive) {
+          clearInterval(this.loop.interval);
+        }
+        // Signify that the text is currently being garbled
+        this.loop.isActive = true;
+        // Start an interval to garble the text
+        this.loop.interval = setInterval(() => {
+          this.value = this.garble(this.base);
+        }, this.loop.milliseconds);
+        return;
       },
       stop: () => {
-        if (this.active) {
+        if (this.loop.isActive) {
           if (this.onStop) {
             this.onStop();
           }
-          // Signify that the text is no longer being garbled
-          this.active = false;
           // Clear the loop to prevent the string from being garbled indefinitely
           clearInterval(this.loop.interval);
           /* Transition from garbled text to the base string. The transitionEnd event
@@ -125,10 +124,12 @@ class TextGarbler {
            */
           this.loop.transition()
           .then(() => {
-              if (this.onTransitionEnd) {
-                this.onTransitionEnd();
-              }
-              return true;
+            // Signify that the text is no longer being garbled
+            this.loop.isActive = false;
+            if (this.onTransitionEnd) {
+              this.onTransitionEnd();
+            }
+            return true;
           });
         } else {
           return false;
@@ -143,7 +144,7 @@ class TextGarbler {
           // Track how many characters we have revealed so far
           let charactersRevealed = 0;
           // Set a loop to resolve the garbled string to it's true value progressively
-          let loop = setInterval(() => {
+          this.loop.interval = setInterval(() => {
             const splitbase = this.base.split('');
             const splitGarbledString = this.garble(this.base, true);
             // Overwrite the garbled characters with the true character for those
@@ -161,7 +162,7 @@ class TextGarbler {
             // Once the entire string has been itterated through, clear the interval
             // and resolve the promise
             if (charactersRevealed > this.base.length) {
-              clearInterval(loop);
+              clearInterval(this.loop.interval);
               this.value = this.base;
               // Fire the garble event
               if (this.onGarble) {
