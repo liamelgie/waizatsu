@@ -86,9 +86,9 @@ class TextGarbler {
     /** @private */
     this.onGarble;
     /** @private */
-    this.onStart;
+    this.onRepeaterStart;
     /** @private */
-    this.onStop;
+    this.onRepeaterStop;
     /** @private */
     this.onTransitionBegin;
     /** @private */
@@ -140,8 +140,8 @@ class TextGarbler {
       milliseconds: options.refreshEvery,
       /** Starts the repeater. */
       start: () => {
-        if (this.onStart) {
-          this.onStart();
+        if (this.onRepeaterStart) {
+          this.onRepeaterStart();
         }
         if (this.repeater.isActive) {
           clearInterval(this.repeater.interval);
@@ -157,8 +157,8 @@ class TextGarbler {
       /** Stops the repeater. */
       stop: () => {
         if (this.repeater.isActive) {
-          if (this.onStop) {
-            this.onStop();
+          if (this.onRepeaterStop) {
+            this.onRepeaterStop();
           }
           // Clear the interval to prevent the string from being garbled indefinitely
           clearInterval(this.repeater.interval);
@@ -235,11 +235,11 @@ class TextGarbler {
           callback(this.value);
         };
         break;
-      case "start":
-        this.onStart = callback;
+      case "repeaterStart":
+        this.onRepeaterStart = callback;
         break;
-      case "stop":
-        this.onStop = callback;
+      case "repeaterStop":
+        this.onRepeaterStop = callback;
         break;
       case "transitionBegin":
         this.onTransitionBegin = callback;

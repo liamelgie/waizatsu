@@ -26,16 +26,16 @@
     let garbler = new TextGarbler(
       "猥雑 Waizatsu",
       {
-        refreshEvery: 30,
+        refreshEvery: 40,
         characterSet: "auto",
         caseSensitive: true
       }
     );
-    garbler.on("start", () => {
+    garbler.on("repeaterStart", () => {
       console.log("started");
       document.getElementById("example-element").classList.remove("done");
     });
-    garbler.on("stop", () => {
+    garbler.on("repeaterStop", () => {
       console.log("stop");
     });
     garbler.on("garble", (value) => {
