@@ -107,7 +107,7 @@ class TextGarbler {
           // Start an interval to garble the text
           this.loop.interval = setInterval(() => {
             this.value = this.garble(this.base);
-          }, this.milliseconds);
+          }, this.loop.milliseconds);
           return;
         }
       },
@@ -123,7 +123,7 @@ class TextGarbler {
           /* Transition from garbled text to the base string. The transitionEnd event
            * is fired once the promise is resolved.
            */
-          this.transition()
+          this.loop.transition()
           .then(() => {
               if (this.onTransitionEnd) {
                 this.onTransitionEnd();
@@ -133,6 +133,44 @@ class TextGarbler {
         } else {
           return false;
         }
+      },
+      transition: () => {
+        return new Promise(function(resolve, reject) {
+          // Fire the transitionBegin event
+          if (this.onTransitionBegin) {
+            this.onTransitionBegin();
+          }
+          // Track how many characters we have revealed so far
+          let charactersRevealed = 0;
+          // Set a loop to resolve the garbled string to it's true value progressively
+          let loop = setInterval(() => {
+            const splitbase = this.base.split('');
+            const splitGarbledString = this.garble(this.base, true);
+            // Overwrite the garbled characters with the true character for those
+            // that have been itterated through
+            for (let i = 0; i < charactersRevealed; i++) {
+              splitGarbledString[i] = splitbase[i];
+            }
+            // Assign the joined string and fire the garble event
+            this.value = splitGarbledString.join('');
+            if (this.onGarble) {
+              this.onGarble();
+            }
+            // Increment
+            charactersRevealed++;
+            // Once the entire string has been itterated through, clear the interval
+            // and resolve the promise
+            if (charactersRevealed > this.base.length) {
+              clearInterval(loop);
+              this.value = this.base;
+              // Fire the garble event
+              if (this.onGarble) {
+                this.onGarble();
+              }
+              resolve();
+            }
+          }, this.loop.milliseconds);
+        }.bind(this));
       }
     }
 
