@@ -141,11 +141,7 @@ class TextGarbler {
     /** @private */
     this.base = base;
     /** @private */
-    this.active;
-    /** @private */
     this.caseSensitive = options.caseSensitive;
-    /** @private */
-    this.refreshEvery = options.refreshEvery;
     // The custom character set given by the user
     /** @const */
     const CUSTOM = options.customCharacterSet;
