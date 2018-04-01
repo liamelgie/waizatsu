@@ -284,24 +284,6 @@ class TextGarbler {
     }
   }
 
-  /** Start garbling the text. Fires the 'start' event once called. This method
-    * is only executed if the text is not currently being garbled.
-    */
-  start() {
-    if (!this.active) {
-      if (this.onStart) {
-        this.onStart();
-      }
-      // Signify that the text is currently being garbled
-      this.active = true;
-      // Start an interval to garble the text
-      this.loop = setInterval(() => {
-        this.value = this.garble(this.base);
-      }, this.refreshEvery);
-      return;
-    }
-  }
-
   /** Stop garbling the text and transition to the base string. Fires the 'stop'
     * event once called and the 'transitionEnd' event once the transition has
     * completed.
