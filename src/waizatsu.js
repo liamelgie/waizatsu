@@ -284,37 +284,6 @@ class TextGarbler {
     }
   }
 
-  /** Stop garbling the text and transition to the base string. Fires the 'stop'
-    * event once called and the 'transitionEnd' event once the transition has
-    * completed.
-    * This method is only executed if the text is currently being garbled.
-    * @return {boolean} True once the transition has completed. False if the text
-    * is not currently being garbled.
-    */
-  stop() {
-    if (this.active) {
-      if (this.onStop) {
-        this.onStop();
-      }
-      // Signify that the text is no longer being garbled
-      this.active = false;
-      // Clear the loop to prevent the string from being garbled indefinitely
-      clearInterval(this.loop);
-      /* Transition from garbled text to the base string. The transitionEnd event
-       * is fired once the promise is resolved.
-       */
-      this.transition()
-      .then(() => {
-          if (this.onTransitionEnd) {
-            this.onTransitionEnd();
-          }
-          return true;
-      });
-    } else {
-      return false;
-    }
-  }
-
   /** Smoothly transitions the garbled text to the base string.
     * Fires the 'transitionBegin' event once called.
     * @return {Promise} A promise that is resolved once the transition is complete.
