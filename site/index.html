@@ -45,11 +45,11 @@
       document.getElementById("example-element").classList.add("done");
     });
     document.getElementById("example-element").addEventListener("mouseenter", () => {
-      garbler.stop();
+      garbler.loop.stop();
     });
     document.getElementById("example-element").addEventListener("mouseleave", () => {
-      garbler.start();
+      garbler.loop.start();
     });
-    garbler.start();
+    garbler.loop.start();
   </script>
 </body>

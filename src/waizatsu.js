@@ -94,6 +94,48 @@ class TextGarbler {
     /** @private */
     this.onTransitionEnd;
 
+    this.loop = {
+      isActive: false,
+      milliseconds: options.refreshEvery,
+      start: () => {
+        if (!this.active) {
+          if (this.onStart) {
+            this.onStart();
+          }
+          // Signify that the text is currently being garbled
+          this.active = true;
+          // Start an interval to garble the text
+          this.loop.interval = setInterval(() => {
+            this.value = this.garble(this.base);
+          }, this.milliseconds);
+          return;
+        }
+      },
+      stop: () => {
+        if (this.active) {
+          if (this.onStop) {
+            this.onStop();
+          }
+          // Signify that the text is no longer being garbled
+          this.active = false;
+          // Clear the loop to prevent the string from being garbled indefinitely
+          clearInterval(this.loop.interval);
+          /* Transition from garbled text to the base string. The transitionEnd event
+           * is fired once the promise is resolved.
+           */
+          this.transition()
+          .then(() => {
+              if (this.onTransitionEnd) {
+                this.onTransitionEnd();
+              }
+              return true;
+          });
+        } else {
+          return false;
+        }
+      }
+    }
+
     /** @private */
     this.value;
     /** @private */
