@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<head>
+  <title>Get started with 猥雑 Waizatsu</title>
+  <script type="text/javascript" src="../../src/waizatsu.js"></script>
+  <link rel="stylesheet" href="../css/get-started.css">
+  <meta charset="utf-8"/>
+</head>
+<body>
+  <header>
+    <div class="left">
+      <a href="../">猥雑 Waizatsu</a>
+    </div>
+    <div class="right">
+      <a href="">Documentation</a>
+      <a href="">Github</a>
+    </div>
+  </header>
+  <section>
+    <h1>Get Started</h1>
+    <p>Waizatsu is a lightweight, easy-to-use Javascript library for garbling text.</p>
+    <h2>Installing</h2>
+    <p>ES6 Module support will be coming once it's supported by all major browsers (soon!). <br />
+      Until then, Waizatsu will need to be included via a CDN:
+      <pre>&lt;script src="https:linktowaizatsu.com/waizatsu.js"&gt;&lt;/script&gt;</pre>
+    </p>
+    <h2>Hello World</h2>
+    <p>First, create a TextGarbler object:
+      <pre>const input = "Hello World";
+const garbler = new TextGarbler(input);</pre>
+    </p>
+    <p>As soon as the object is created, it will garble its input and store it in the 'value' property:
+      <pre>console.log(garbler.value);
+=> "aDkqO lCbqW"</pre>
+    </p>
+    <p>We can garble the input again by calling the object's `garble` method:
+      <pre>garbler.garble();
+console.log(garbler.value);
+=> "LafsK MpQJw"</pre>
+    </p>
+    <p>This is the most basic possible operation and it's much use. <br />
+      To find out what you can do with this library, take a look at the <a href="../docs">documentation</a> and check out some of the examples.</p>
+
+  </section>
+</body>

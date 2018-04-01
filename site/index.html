@@ -3,12 +3,12 @@
   <title>猥雑 Waizatsu</title>
   <meta charset="utf-8">
   <script type="text/javascript" src="../src/waizatsu.js"></script>
-  <link rel="stylesheet" href="css/stylesheet.css">
+  <link rel="stylesheet" href="css/landing.css">
 </head>
 <body>
   <header>
     <div>
-      <a href="">Get started</a>
+      <a href="./get-started/">Get started</a>
       <a href="https://github.com/liamelgie/waizatsu">GitHub</a>
     </div>
   </header>
@@ -19,15 +19,16 @@
   </div>
   <footer>
       <div class="watermark">
-        <a href="https://github.com/liamelgie">Made with <span id="heart" class="heart">♥</span> by Liam Elgie</a>
+        <a href="https://github.com/liamelgie">Made with <span id="heart" class="heart">💖</span> by Liam Elgie</a>
       </div>
   </footer>
   <script>
     let garbler = new TextGarbler(
       "猥雑 Waizatsu",
       {
-        refreshEvery: 40,
+        refreshEvery: 30,
         characterSet: "auto",
+        caseSensitive: true
       }
     );
     garbler.on("start", () => {
@@ -44,11 +45,11 @@
       document.getElementById("example-element").classList.add("done");
     });
     document.getElementById("example-element").addEventListener("mouseenter", () => {
-      garbler.stop();
+      garbler.repeater.stop();
     });
     document.getElementById("example-element").addEventListener("mouseleave", () => {
-      garbler.start();
+      garbler.repeater.start();
     });
-    garbler.start();
+    garbler.repeater.start();
   </script>
 </body>

@@ -66,14 +66,14 @@
 
 class TextGarbler {
   /**
-    * @param {string} baseString The text that will be garbled.
+    * @param {string} base The text that will be garbled.
     * @param {Object} [options] Options that control how the class will perform.
     * @param {boolean} [options.caseSensitive=false] Whether the garbled text should maintain the base string's case.
     * @param {string|Array} [options.characterSet="alphabet"] The set of characters that will be used to garble the text.
     * @param {Array} [options.customCharacterSet=[]] A set of custom characters that can be used to garble the text.
     * @param {number} [options.refreshEvery=50] The frequency at which the text will scramble. Lower values will increase resource usage but improve smoothness
     */
-  constructor(baseString, options) {
+  constructor(base, options) {
     // Merge defaults with given options
     options = Object.assign({}, {
       caseSensitive: false,
@@ -97,12 +97,10 @@ class TextGarbler {
     /** @private */
     this.value;
     /** @private */
-    this.baseString = baseString;
+    this.base = base;
     /** @private */
     this.caseSensitive = options.caseSensitive;
-    /** @private */
-    this.refreshEvery = options.refreshEvery;
-    // A custom character set given by the user
+    // The custom character set given by the user
     /** @const */
     const CUSTOM = options.customCharacterSet;
     // The character set to be referenced when garbling text
@@ -133,10 +131,96 @@ class TextGarbler {
       }
     })();
 
-    // A boolean to show whether the text is currently being garbled
-    /** @private */
-    this.active;
+    /** Contains the methods and properties for the controlling of the repeater feature.
+      * This feature repeatedly garbles the text at a given interval.
+      */
+    /** @public */
+    this.repeater = {
+      isActive: false,
+      milliseconds: options.refreshEvery,
+      /** Starts the repeater. */
+      start: () => {
+        if (this.onStart) {
+          this.onStart();
+        }
+        if (this.repeater.isActive) {
+          clearInterval(this.repeater.interval);
+        }
+        // Signify that the text is currently being garbled
+        this.repeater.isActive = true;
+        // Start an interval to garble the text
+        this.repeater.interval = setInterval(() => {
+          this.value = this.garble(this.base);
+        }, this.repeater.milliseconds);
+        return;
+      },
+      /** Stops the repeater. */
+      stop: () => {
+        if (this.repeater.isActive) {
+          if (this.onStop) {
+            this.onStop();
+          }
+          // Clear the interval to prevent the string from being garbled indefinitely
+          clearInterval(this.repeater.interval);
+          /* Transition from garbled text to the base string. The transitionEnd event
+           * is fired once the promise is resolved.
+           */
+          this.repeater.transition()
+          .then(() => {
+            // Signify that the text is no longer being garbled
+            this.repeater.isActive = false;
+            if (this.onTransitionEnd) {
+              this.onTransitionEnd();
+            }
+            return true;
+          });
+        } else {
+          return false;
+        }
+      },
+      /** Smoothly transitions between the garbled and base string */
+      transition: () => {
+        return new Promise(function(resolve, reject) {
+          // Fire the transitionBegin event
+          if (this.onTransitionBegin) {
+            this.onTransitionBegin();
+          }
+          // Track how many characters we have revealed so far
+          let charactersRevealed = 0;
+          // Set a loop to resolve the garbled string to it's true value progressively
+          this.repeater.interval = setInterval(() => {
+            const splitbase = this.base.split('');
+            const splitGarbledString = this.garble(this.base, true);
+            // Overwrite the garbled characters with the true character for those
+            // that have been itterated through
+            for (let i = 0; i < charactersRevealed; i++) {
+              splitGarbledString[i] = splitbase[i];
+            }
+            // Assign the joined string and fire the garble event
+            this.value = splitGarbledString.join('');
+            if (this.onGarble) {
+              this.onGarble();
+            }
+            // Increment
+            charactersRevealed++;
+            // Once the entire string has been itterated through, clear the interval
+            // and resolve the promise
+            if (charactersRevealed > this.base.length) {
+              clearInterval(this.repeater.interval);
+              this.value = this.base;
+              // Fire the garble event
+              if (this.onGarble) {
+                this.onGarble();
+              }
+              resolve();
+            }
+          }, this.repeater.milliseconds);
+        }.bind(this));
+      }
+    }
 
+    // Garble the string once so that value does not equal the base string
+    this.garble(this.base);
   }
 
   /** Assigns a method to be called once a specified event is fired.
@@ -244,98 +328,6 @@ class TextGarbler {
       // Join the split string and return it
       return splitGarbledString.join('');
     }
-  }
-
-  /** Start garbling the text. Fires the 'start' event once called. This method
-    * is only executed if the text is not currently being garbled.
-    */
-  start() {
-    if (!this.active) {
-      if (this.onStart) {
-        this.onStart();
-      }
-      // Signify that the text is currently being garbled
-      this.active = true;
-      // Start an interval to garble the text
-      this.loop = setInterval(() => {
-        this.value = this.garble(this.baseString);
-      }, this.refreshEvery);
-      return;
-    }
-  }
-
-  /** Stop garbling the text and transition to the base string. Fires the 'stop'
-    * event once called and the 'transitionEnd' event once the transition has
-    * completed.
-    * This method is only executed if the text is currently being garbled.
-    * @return {boolean} True once the transition has completed. False if the text
-    * is not currently being garbled.
-    */
-  stop() {
-    if (this.active) {
-      if (this.onStop) {
-        this.onStop();
-      }
-      // Signify that the text is no longer being garbled
-      this.active = false;
-      // Clear the loop to prevent the string from being garbled indefinitely
-      clearInterval(this.loop);
-      /* Transition from garbled text to the base string. The transitionEnd event
-       * is fired once the promise is resolved.
-       */
-      this.transition()
-      .then(() => {
-          if (this.onTransitionEnd) {
-            this.onTransitionEnd();
-          }
-          return true;
-      });
-    } else {
-      return false;
-    }
-  }
-
-  /** Smoothly transitions the garbled text to the base string.
-    * Fires the 'transitionBegin' event once called.
-    * @return {Promise} A promise that is resolved once the transition is complete.
-    */
-  transition() {
-    return new Promise(function(resolve, reject) {
-      // Fire the transitionBegin event
-      if (this.onTransitionBegin) {
-        this.onTransitionBegin();
-      }
-      // Track how many characters we have revealed so far
-      let charactersRevealed = 0;
-      // Set a loop to resolve the garbled string to it's true value progressively
-      let loop = setInterval(() => {
-        const splitBaseString = this.baseString.split('');
-        const splitGarbledString = this.garble(this.baseString, true);
-        // Overwrite the garbled characters with the true character for those
-        // that have been itterated through
-        for (let i = 0; i < charactersRevealed; i++) {
-          splitGarbledString[i] = splitBaseString[i];
-        }
-        // Assign the joined string and fire the garble event
-        this.value = splitGarbledString.join('');
-        if (this.onGarble) {
-          this.onGarble();
-        }
-        // Increment
-        charactersRevealed++;
-        // Once the entire string has been itterated through, clear the interval
-        // and resolve the promise
-        if (charactersRevealed > this.baseString.length) {
-          clearInterval(loop);
-          this.value = this.baseString;
-          // Fire the garble event
-          if (this.onGarble) {
-            this.onGarble();
-          }
-          resolve();
-        }
-      }, this.refreshEvery);
-    }.bind(this));
   }
 }
 
