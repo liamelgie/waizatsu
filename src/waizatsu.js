@@ -220,7 +220,7 @@ class TextGarbler {
     }
 
     // Garble the string once so that value does not equal the base string
-    this.garble(this.base);
+    this.value = this.garble(this.base);
   }
 
   /** Assigns a method to be called once a specified event is fired.
@@ -268,7 +268,7 @@ class TextGarbler {
     * @return {string|Array} The garbled text, either as a string or split into
     * an array.
     */
-  garble(string, returnArray) {
+  garble(string=this.base, returnArray=false) {
     const splitString = string.split('');
     const splitGarbledString = [];
     if (this.characterSet === AUTO) {

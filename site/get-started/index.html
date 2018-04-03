@@ -2,7 +2,7 @@
 <head>
   <title>Get started with 猥雑 Waizatsu</title>
   <script type="text/javascript" src="../../src/waizatsu.js"></script>
-  <link rel="stylesheet" href="../css/get-started.css">
+  <link rel="stylesheet" href="../css/get-started.css" />
   <meta charset="utf-8"/>
 </head>
 <body>
@@ -20,25 +20,45 @@
     <p>Waizatsu is a lightweight, easy-to-use Javascript library for garbling text.</p>
     <h2>Installing</h2>
     <p>ES6 Module support will be coming once it's supported by all major browsers (soon!). <br />
-      Until then, Waizatsu will need to be included via a CDN:
-      <pre>&lt;script src="https:linktowaizatsu.com/waizatsu.js"&gt;&lt;/script&gt;</pre>
+      For now, Waizatsu needs to be included via a CDN:
+      <pre><code>&lt;script src="https://linktowaizatsu.com/waizatsu.js"&gt;&lt;/script&gt;</code></pre>
     </p>
     <h2>Hello World</h2>
-    <p>First, create a TextGarbler object:
-      <pre>const input = "Hello World";
-const garbler = new TextGarbler(input);</pre>
+    <p data-height="282" data-theme-id="dark" data-slug-hash="bvKMNd" data-default-tab="js" data-user="liamelgie" data-embed-version="2" data-pen-title="bvKMNd" class="codepen">See the Pen <a href="https://codepen.io/liamelgie/pen/bvKMNd/">bvKMNd</a> by Liam (<a href="https://codepen.io/liamelgie">@liamelgie</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+    <p>First, create an instance of Waizatsu:
+      <pre><code>const input = "Hello World";
+const garbler = new TextGarbler(input);</code></pre>
     </p>
-    <p>As soon as the object is created, it will garble its input and store it in the 'value' property:
-      <pre>console.log(garbler.value);
-=> "aDkqO lCbqW"</pre>
+    <p>This instance immediately garbles its input and assigns it to the property 'value':
+      <pre><code>console.log(garbler.value);
+=> "aDkqO lCbqW"</code></pre>
     </p>
-    <p>We can garble the input again by calling the object's `garble` method:
-      <pre>garbler.garble();
+    <p>We can garble the input again by calling the `garble` method:
+      <pre><code>garbler.garble();
 console.log(garbler.value);
-=> "LafsK MpQJw"</pre>
+=> "LafsK MpQJw"</code></pre>
     </p>
-    <p>This is the most basic possible operation and it's much use. <br />
-      To find out what you can do with this library, take a look at the <a href="../docs">documentation</a> and check out some of the examples.</p>
-
+    <h2>Repeater</h2>
+    <p>Waizatsu's repeater feature allows you to repeatedly garble a string of text and transition it back to its original value on demand.<br />
+      To start the repeater, call the `repeater.start` method:
+      <pre><code>// Start the repeater
+garbler.repeater.start();
+// Check the garbled value
+console.log(garbler.value);
+=> "msAuK pWAsC"
+// Check the value again to see that it has changed
+console.log(garbler.value);
+=> "KwiSH AKvys"</code></pre>
+    </p>
+    <p>To stop the repeater, call the `repeater.stop` method. Once called, the garbled value will transition to its original value:
+      <pre><code>// Check the garbled value
+console.log(garbler.value);
+=> "uJSYe AksUa"
+// Stop the repeater
+garbler.repeater.stop();
+// Check the value again to see that it has transitioned
+console.log(garbler.value);
+=> "Hello World"</code></pre>
   </section>
 </body>
