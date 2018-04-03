@@ -150,7 +150,7 @@ class TextGarbler {
         this.repeater.isActive = true;
         // Start an interval to garble the text
         this.repeater.interval = setInterval(() => {
-          this.value = this.garble(this.base);
+          this.garble();
         }, this.repeater.milliseconds);
         return;
       },
@@ -190,7 +190,7 @@ class TextGarbler {
           // Set a loop to resolve the garbled string to it's true value progressively
           this.repeater.interval = setInterval(() => {
             const splitbase = this.base.split('');
-            const splitGarbledString = this.garble(this.base, true);
+            const splitGarbledString = this.garble(true, "array");
             // Overwrite the garbled characters with the true character for those
             // that have been itterated through
             for (let i = 0; i < charactersRevealed; i++) {
@@ -220,7 +220,7 @@ class TextGarbler {
     }
 
     // Garble the string once so that value does not equal the base string
-    this.value = this.garble(this.base);
+    this.garble();
   }
 
   /** Assigns a method to be called once a specified event is fired.
@@ -229,26 +229,26 @@ class TextGarbler {
     */
   on(event, callback) {
     switch(event) {
-      case "garble":
-        // Returns the garbled text so that it can be manipulated
-        this.onGarble = () => {
-          callback(this.value);
-        };
-        break;
-      case "repeaterStart":
-        this.onRepeaterStart = callback;
-        break;
-      case "repeaterStop":
-        this.onRepeaterStop = callback;
-        break;
-      case "transitionBegin":
-        this.onTransitionBegin = callback;
-        break;
-      case "transitionEnd":
-        this.onTransitionEnd = callback;
-        break;
-      default:
-        null
+    case "garble":
+      // Returns the garbled text so that it can be manipulated
+      this.onGarble = () => {
+        callback(this.value);
+      };
+      break;
+    case "repeaterStart":
+      this.onRepeaterStart = callback;
+      break;
+    case "repeaterStop":
+      this.onRepeaterStop = callback;
+      break;
+    case "transitionBegin":
+      this.onTransitionBegin = callback;
+      break;
+    case "transitionEnd":
+      this.onTransitionEnd = callback;
+      break;
+    default:
+      null
     }
     return;
   }
@@ -268,8 +268,8 @@ class TextGarbler {
     * @return {string|Array} The garbled text, either as a string or split into
     * an array.
     */
-  garble(string=this.base, returnArray=false) {
-    const splitString = string.split('');
+  garble(returnValue=false, returnAs="string") {
+    const splitString = this.base.split('');
     const splitGarbledString = [];
     if (this.characterSet === AUTO) {
       // Generate a random character for every character in the given string from
@@ -318,16 +318,22 @@ class TextGarbler {
         splitGarbledString.push(garbledCharacter);
       }
     }
-    if (returnArray) {
-      return splitGarbledString;
-    } else {
-      // Fire the garble event
-      if (this.onGarble) {
-        this.onGarble();
-      }
-      // Join the split string and return it
+    // Update the value to the new string
+    this.value = splitGarbledString.join('');
+    // If asked to return the garbled text, return it as the given type
+    if (returnValue && returnAs.toLowerCase() === "string") {
       return splitGarbledString.join('');
+    } else if (returnValue && returnAs.toLowerCase() === "array") {
+      return splitGarbledString;
+    } else if (returnValue && returnAs.toLowerCase() != ("array" || "string")) {
+      console.error(`Cannot return the garbled data as the following type: ${returnAs}.
+        Use either 'string' or 'array'.`);
     }
+    // Fire the garble event
+    if (this.onGarble) {
+      this.onGarble();
+    }
+    return;
   }
 }
 
