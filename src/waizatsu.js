@@ -4,7 +4,7 @@
   * @version 0.10.5
   * @module Waizsatsu
   */
-
+  'use strict';
   // Arrays of characters to reference when garbling text
   const ALPHABET = (() => {
     const caps = [...Array(26)].map((val, i) => String.fromCharCode(i + 65));
@@ -340,8 +340,8 @@ class TextGarbler {
 /**
   * Returns a string containing a random character. This character is selected
   * from the chosen characterSet at a random index.
-  * @param {Array} characterSet The character set that should
-  * be used to generate a random value.
+  * @param {Array} characterSet The character set that should be used to generate
+  * a random value.
   * @return {string} A single random character.
   */
 function generateRandomCharacter(characterSet) {
@@ -350,8 +350,7 @@ function generateRandomCharacter(characterSet) {
 
 /**
   * Returns a random number between zero and the given max value.
-  * @param {number} max The maximum value that can
-  * generated.
+  * @param {number} max The maximum value that can be generated.
   * @return {number} A random number.
   */
 function generateRandomInteger(max) {
