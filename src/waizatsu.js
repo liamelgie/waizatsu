@@ -82,16 +82,6 @@ class TextGarbler {
       refreshEvery: 50,
     }, options);
 
-    // Initialise events object
-    /** @private */
-    this.events = {
-      onGarble: () => {},
-      onRepeaterStart: () => {},
-      onRepeaterStop: () => {},
-      onTransitionBegin: () => {},
-      onTransitionEnd: () => {}
-    }
-
     /** @private */
     this.value;
     /** @private */
@@ -128,6 +118,16 @@ class TextGarbler {
         }
       }
     })();
+
+    // Initialise events object
+    /** @private */
+    this.events = {
+      onGarble: () => {},
+      onRepeaterStart: () => {},
+      onRepeaterStop: () => {},
+      onTransitionBegin: () => {},
+      onTransitionEnd: () => {}
+    }
 
     /** Contains the methods and properties for the controlling of the repeater feature.
       * This feature repeatedly garbles the text at a given interval.
