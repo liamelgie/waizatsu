@@ -99,13 +99,10 @@ class TextGarbler {
           let combinedSet = [];
           for (let set of options.characterSet) {
             if (["AUTO", "ALPHABET", "NUMBERS", "EMOJI", "BINARY", "SYMBOLS", "CHINESE", "JAPANESE", "KOREAN", "CUSTOM"].includes(set.toUpperCase())) {
-              if (set === "AUTO") {
-                return AUTO;
-              }
-              combinedSet = combinedSet.concat((set.toUpperCase()));
+              if (set === "AUTO") return AUTO;
+              return combinedSet.concat((set.toUpperCase()));
             }
           }
-          return combinedSet;
         } else if (typeof options.characterSet === "string") {
           if (!["AUTO", "ALPHABET", "NUMBERS", "EMOJI", "BINARY", "SYMBOLS", "CHINESE", "JAPANESE", "KOREAN", "CUSTOM"].includes(options.characterSet.toUpperCase())) {
             console.error(`${options.characterSet} is not a valid character set. Use one of the following: \n
@@ -138,12 +135,8 @@ class TextGarbler {
       milliseconds: options.refreshEvery,
       /** Starts the repeater. */
       start: () => {
-        if (this.events.onRepeaterStart) {
-          this.events.onRepeaterStart();
-        }
-        if (this.repeater.isActive) {
-          clearInterval(this.repeater.interval);
-        }
+        if (this.events.onRepeaterStart) this.events.onRepeaterStart();
+        if (this.repeater.isActive) clearInterval(this.repeater.interval);
         // Signify that the text is currently being garbled
         this.repeater.isActive = true;
         // Start an interval to garble the text
@@ -155,9 +148,7 @@ class TextGarbler {
       /** Stops the repeater. */
       stop: () => {
         if (this.repeater.isActive) {
-          if (this.events.onRepeaterStop) {
-            this.events.onRepeaterStop();
-          }
+          if (this.events.onRepeaterStop) this.events.onRepeaterStop();
           // Clear the interval to prevent the string from being garbled indefinitely
           clearInterval(this.repeater.interval);
           /* Transition from garbled text to the base string. The transitionEnd event
@@ -167,9 +158,7 @@ class TextGarbler {
           .then(() => {
             // Signify that the text is no longer being garbled
             this.repeater.isActive = false;
-            if (this.events.onTransitionEnd) {
-              this.events.onTransitionEnd();
-            }
+            if (this.events.onTransitionEnd) this.events.onTransitionEnd();
             return true;
           });
         } else {
@@ -180,9 +169,7 @@ class TextGarbler {
       transition: () => {
         return new Promise(function(resolve, reject) {
           // Fire the transitionBegin event
-          if (this.events.onTransitionBegin) {
-            this.events.onTransitionBegin();
-          }
+          if (this.events.onTransitionBegin) this.events.onTransitionBegin();
           // Track how many characters we have revealed so far
           let charactersRevealed = 0;
           // Set a loop to resolve the garbled string to it's true value progressively
@@ -196,9 +183,7 @@ class TextGarbler {
             }
             // Assign the joined string and fire the garble event
             this.value = splitGarbledString.join('');
-            if (this.events.onGarble) {
-              this.events.onGarble();
-            }
+            if (this.events.onGarble) this.events.onGarble();
             // Increment
             charactersRevealed++;
             // Once the entire string has been itterated through, clear the interval
@@ -207,9 +192,7 @@ class TextGarbler {
               clearInterval(this.repeater.interval);
               this.value = this.base;
               // Fire the garble event
-              if (this.events.onGarble) {
-                this.events.onGarble();
-              }
+              if (this.events.onGarble) this.events.onGarble();
               resolve();
             }
           }, this.repeater.milliseconds);
@@ -322,9 +305,7 @@ class TextGarbler {
         Use either 'string' or 'array'.`);
     }
     // Fire the garble event
-    if (this.events.onGarble) {
-      this.events.onGarble();
-    }
+    if (this.events.onGarble) this.events.onGarble();
     return;
   }
 }
