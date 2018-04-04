@@ -269,11 +269,12 @@ class TextGarbler {
   garble(returnValue=false, returnAs="string") {
     const splitString = this.base.split('');
     const splitGarbledString = [];
-    if (this.characterSet === AUTO) {
-      // Generate a random character for every character in the given string from
-      // the character set that matches the character
+
+    for (let character of splitString) {
       let garbledCharacter;
-      for (let character of splitString) {
+      if (this.characterSet === AUTO) {
+        // Generate a random character for every character in the given string from
+        // the character set that matches the character
         if (/\s/.test(character)) {
           garbledCharacter = ' ';
         } else if (/[0-1]/.test(character)) {
@@ -287,34 +288,21 @@ class TextGarbler {
         } else {
           garbledCharacter = generateRandomCharacter(ALPHABET);
         }
-        // If the caseSensitive flag was given, test the case of the original character
-        // and match it.
-        if (this.caseSensitive) {
-          if (/[a-z]/.test(character)) {
-            garbledCharacter = garbledCharacter.toLowerCase();
-          } else if (/[A-Z]/.test(character)) {
-            garbledCharacter = garbledCharacter.toUpperCase();
-          }
-        }
-        // Push the garbled character into the array
-        splitGarbledString.push(garbledCharacter);
+      } else {
+        // Generate a random character for every character in the given string
+        garbledCharacter = generateRandomCharacter(this.characterSet);
       }
-    } else {
-      // Generate a random character for every character in the given string
-      for (let character of splitString) {
-        let garbledCharacter = generateRandomCharacter(this.characterSet);
-        // If the caseSensitive flag was given, test the case of the original character
-        // and match it.
-        if (this.caseSensitive) {
-          if (/[a-z]/.test(character)) {
-            garbledCharacter.toLowerCase();
-          } else if (/[A-Z]/.test(character)) {
-            garbledCharacter.toUpperCase();
-          }
+      // If the caseSensitive flag was given, test the case of the original character
+      // and match it.
+      if (this.caseSensitive) {
+        if (/[a-z]/.test(character)) {
+          garbledCharacter = garbledCharacter.toLowerCase();
+        } else if (/[A-Z]/.test(character)) {
+          garbledCharacter = garbledCharacter.toUpperCase();
         }
-        // Push the garbled character into the array
-        splitGarbledString.push(garbledCharacter);
       }
+      // Push the garbled character into the array
+      splitGarbledString.push(garbledCharacter);
     }
     // Update the value to the new string
     this.value = splitGarbledString.join('');
