@@ -98,14 +98,24 @@ class TextGarbler {
         if (typeof options.characterSet === "object") {
           let combinedSet = [];
           for (let set of options.characterSet) {
-            if (["AUTO", "ALPHABET", "NUMBERS", "EMOJI", "BINARY", "SYMBOLS", "CHINESE", "JAPANESE", "KOREAN", "CUSTOM"].includes(set.toUpperCase())) {
+            if ([
+              "AUTO", "ALPHABET", "NUMBERS", "EMOJI", "BINARY", "SYMBOLS",
+              "CHINESE", "JAPANESE", "KOREAN", "CUSTOM"]
+              .includes(set.toUpperCase())
+            ) {
               return (set === "AUTO") ? AUTO : combinedSet.concat((set.toUpperCase()));
             }
           }
         } else if (typeof options.characterSet === "string") {
-          if (!["AUTO", "ALPHABET", "NUMBERS", "EMOJI", "BINARY", "SYMBOLS", "CHINESE", "JAPANESE", "KOREAN", "CUSTOM"].includes(options.characterSet.toUpperCase())) {
-            console.error(`${options.characterSet} is not a valid character set. Use one of the following: \n
-            AUTO, ALPHABET, NUMBERS, EMOJI, BINARY, SYMBOLS, CHINESE, JAPANESE, KOREAN or CUSTOM.`);
+          if (![
+            "AUTO", "ALPHABET", "NUMBERS", "EMOJI", "BINARY", "SYMBOLS",
+            "CHINESE", "JAPANESE", "KOREAN", "CUSTOM"]
+            .includes(options.characterSet.toUpperCase())
+          ) {
+            console.error(`${options.characterSet} is not a valid character set.
+            Use one of the following: \n
+            AUTO, ALPHABET, NUMBERS, EMOJI, BINARY, SYMBOLS, CHINESE, JAPANESE,
+            KOREAN or CUSTOM.`);
             // Fallback to ALPHABET
             return ALPHABET;
           } else {
@@ -208,8 +218,10 @@ class TextGarbler {
     */
   on(event, callback) {
     if (typeof event != "string" || typeof callback != "function") {
-      if (typeof event != "string") console.error(`Invalid parameter: ${event} must be a string but is instead a ${typeof event}`);
-      if (typeof callback != "function") console.error(`Invalid parameter: ${callback} must be a function but is instead a ${typeof callback}`);
+      if (typeof event != "string") console.error(`Invalid parameter:
+        ${event} must be a string but is instead a ${typeof event}`);
+      if (typeof callback != "function") console.error(`Invalid parameter:
+        ${callback} must be a function but is instead a ${typeof callback}`);
     }
     switch(event) {
     case "garble":
