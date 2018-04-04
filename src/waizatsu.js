@@ -82,17 +82,15 @@ class TextGarbler {
       refreshEvery: 50,
     }, options);
 
-    // Define events
+    // Initialise events object
     /** @private */
-    this.onGarble;
-    /** @private */
-    this.onRepeaterStart;
-    /** @private */
-    this.onRepeaterStop;
-    /** @private */
-    this.onTransitionBegin;
-    /** @private */
-    this.onTransitionEnd;
+    this.events = {
+      onGarble: () => {},
+      onRepeaterStart: () => {},
+      onRepeaterStop: () => {},
+      onTransitionBegin: () => {},
+      onTransitionEnd: () => {}
+    }
 
     /** @private */
     this.value;
@@ -140,8 +138,8 @@ class TextGarbler {
       milliseconds: options.refreshEvery,
       /** Starts the repeater. */
       start: () => {
-        if (this.onRepeaterStart) {
-          this.onRepeaterStart();
+        if (this.events.onRepeaterStart) {
+          this.events.onRepeaterStart();
         }
         if (this.repeater.isActive) {
           clearInterval(this.repeater.interval);
@@ -157,8 +155,8 @@ class TextGarbler {
       /** Stops the repeater. */
       stop: () => {
         if (this.repeater.isActive) {
-          if (this.onRepeaterStop) {
-            this.onRepeaterStop();
+          if (this.events.onRepeaterStop) {
+            this.events.onRepeaterStop();
           }
           // Clear the interval to prevent the string from being garbled indefinitely
           clearInterval(this.repeater.interval);
@@ -169,8 +167,8 @@ class TextGarbler {
           .then(() => {
             // Signify that the text is no longer being garbled
             this.repeater.isActive = false;
-            if (this.onTransitionEnd) {
-              this.onTransitionEnd();
+            if (this.events.onTransitionEnd) {
+              this.events.onTransitionEnd();
             }
             return true;
           });
@@ -182,8 +180,8 @@ class TextGarbler {
       transition: () => {
         return new Promise(function(resolve, reject) {
           // Fire the transitionBegin event
-          if (this.onTransitionBegin) {
-            this.onTransitionBegin();
+          if (this.events.onTransitionBegin) {
+            this.events.onTransitionBegin();
           }
           // Track how many characters we have revealed so far
           let charactersRevealed = 0;
@@ -198,8 +196,8 @@ class TextGarbler {
             }
             // Assign the joined string and fire the garble event
             this.value = splitGarbledString.join('');
-            if (this.onGarble) {
-              this.onGarble();
+            if (this.events.onGarble) {
+              this.events.onGarble();
             }
             // Increment
             charactersRevealed++;
@@ -209,8 +207,8 @@ class TextGarbler {
               clearInterval(this.repeater.interval);
               this.value = this.base;
               // Fire the garble event
-              if (this.onGarble) {
-                this.onGarble();
+              if (this.events.onGarble) {
+                this.events.onGarble();
               }
               resolve();
             }
@@ -231,21 +229,21 @@ class TextGarbler {
     switch(event) {
     case "garble":
       // Returns the garbled text so that it can be manipulated
-      this.onGarble = () => {
+      this.events.onGarble = () => {
         callback(this.value);
       };
       break;
     case "repeaterStart":
-      this.onRepeaterStart = callback;
+      this.events.onRepeaterStart = callback;
       break;
     case "repeaterStop":
-      this.onRepeaterStop = callback;
+      this.events.onRepeaterStop = callback;
       break;
     case "transitionBegin":
-      this.onTransitionBegin = callback;
+      this.events.onTransitionBegin = callback;
       break;
     case "transitionEnd":
-      this.onTransitionEnd = callback;
+      this.events.onTransitionEnd = callback;
       break;
     default:
       null
@@ -330,8 +328,8 @@ class TextGarbler {
         Use either 'string' or 'array'.`);
     }
     // Fire the garble event
-    if (this.onGarble) {
-      this.onGarble();
+    if (this.events.onGarble) {
+      this.events.onGarble();
     }
     return;
   }
