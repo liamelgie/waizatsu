@@ -226,6 +226,10 @@ class TextGarbler {
     * @param {function} callback The method that will be called.
     */
   on(event, callback) {
+    if (typeof event != "string" || typeof callback != "function") {
+      if (typeof event != "string") console.error(`Invalid parameter: ${event} must be a string but is instead a ${typeof event}`);
+      if (typeof callback != "function") console.error(`Invalid parameter: ${callback} must be a function but is instead a ${typeof callback}`);
+    }
     switch(event) {
     case "garble":
       // Returns the garbled text so that it can be manipulated
@@ -246,12 +250,11 @@ class TextGarbler {
       this.events.onTransitionEnd = callback;
       break;
     default:
-      null
+      console.error(`${event} is not a valid event. The following events are valid:
+        garble, repeaterStart, repeaterStop, transitionBegin, transitionEnd.`);
+      return false;
     }
-    return;
-  }
-
-  fireEvent(event) {
+    return true;
   }
 
   /** Garble the string using the chosen character set and return it as either a
