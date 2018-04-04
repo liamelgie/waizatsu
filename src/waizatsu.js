@@ -99,8 +99,7 @@ class TextGarbler {
           let combinedSet = [];
           for (let set of options.characterSet) {
             if (["AUTO", "ALPHABET", "NUMBERS", "EMOJI", "BINARY", "SYMBOLS", "CHINESE", "JAPANESE", "KOREAN", "CUSTOM"].includes(set.toUpperCase())) {
-              if (set === "AUTO") return AUTO;
-              return combinedSet.concat((set.toUpperCase()));
+              return (set === "AUTO") ? AUTO : combinedSet.concat((set.toUpperCase()));
             }
           }
         } else if (typeof options.characterSet === "string") {
@@ -154,8 +153,7 @@ class TextGarbler {
           /* Transition from garbled text to the base string. The transitionEnd event
            * is fired once the promise is resolved.
            */
-          this.repeater.transition()
-          .then(() => {
+          this.repeater.transition().then(() => {
             // Signify that the text is no longer being garbled
             this.repeater.isActive = false;
             if (this.events.onTransitionEnd) this.events.onTransitionEnd();
@@ -262,48 +260,35 @@ class TextGarbler {
     for (let character of splitString) {
       let garbledCharacter;
       if (this.characterSet === AUTO) {
-        // Generate a random character for every character in the given string from
-        // the character set that matches the character
-        if (/\s/.test(character)) {
-          garbledCharacter = ' ';
-        } else if (/[0-1]/.test(character)) {
-          garbledCharacter = generateRandomCharacter(BINARY);
-        } else if (/[0-9]/.test(character)) {
-          garbledCharacter = generateRandomCharacter(NUMBERS);
-        } else if (/[-!$%^&*()_+|~=`{}\[\]:";'<>@?,.\/]/.test(character)) {
-          garbledCharacter = generateRandomCharacter(SYMBOLS);
-        } else if (/[^-!$%^&*()_+|~=`{}\[\]:";'<>@?,.\/\w\d\s]/.test(character)) {
-          garbledCharacter = generateRandomCharacter(CJK);
-        } else {
-          garbledCharacter = generateRandomCharacter(ALPHABET);
-        }
+        garbledCharacter = /\s/.test(character) ? ' '
+          : /[0-1]/.test(character) ? generateRandomCharacter(BINARY)
+          : /[0-9]/.test(character) ? generateRandomCharacter(NUMBERS)
+          : /[-!$%^&*()_+|~=`{}\[\]:";'<>@?,.\/]/.test(character) ? generateRandomCharacter(SYMBOLS)
+          : /[^-!$%^&*()_+|~=`{}\[\]:";'<>@?,.\/\w\d\s]/.test(character) ? generateRandomCharacter(CJK)
+          : generateRandomCharacter(ALPHABET);
       } else {
-        // Generate a random character for every character in the given string
         garbledCharacter = generateRandomCharacter(this.characterSet);
       }
+
       // If the caseSensitive flag was given, test the case of the original character
       // and match it.
       if (this.caseSensitive) {
-        if (/[a-z]/.test(character)) {
-          garbledCharacter = garbledCharacter.toLowerCase();
-        } else if (/[A-Z]/.test(character)) {
-          garbledCharacter = garbledCharacter.toUpperCase();
-        }
+        garbledCharacter = /[a-z]/.test(character) ? garbledCharacter.toLowerCase()
+        : /[A-Z]/.test(character) ? garbledCharacter.toUpperCase()
+        : garbledCharacter
       }
+
       // Push the garbled character into the array
       splitGarbledString.push(garbledCharacter);
     }
     // Update the value to the new string
     this.value = splitGarbledString.join('');
     // If asked to return the garbled text, return it as the given type
-    if (returnValue && returnAs.toLowerCase() === "string") {
-      return splitGarbledString.join('');
-    } else if (returnValue && returnAs.toLowerCase() === "array") {
-      return splitGarbledString;
-    } else if (returnValue && returnAs.toLowerCase() != ("array" || "string")) {
-      console.error(`Cannot return the garbled data as the following type: ${returnAs}.
-        Use either 'string' or 'array'.`);
-    }
+    if (returnValue && returnAs.toLowerCase() === "string") return splitGarbledString.join('');
+    if (returnValue && returnAs.toLowerCase() === "array") return splitGarbledString;
+    if (returnValue && returnAs.toLowerCase() != ("array" || "string")) console.error(`
+      Cannot return the garbled data as the following type: ${returnAs}. Use either 'string' or 'array'.`
+    );
     // Fire the garble event
     if (this.events.onGarble) this.events.onGarble();
     return;
