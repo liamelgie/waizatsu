@@ -24,8 +24,6 @@
       <pre><code>&lt;script src="https://linktowaizatsu.com/waizatsu.js"&gt;&lt;/script&gt;</code></pre>
     </p>
     <h2>Hello World</h2>
-    <p data-height="282" data-theme-id="dark" data-slug-hash="bvKMNd" data-default-tab="js" data-user="liamelgie" data-embed-version="2" data-pen-title="bvKMNd" class="codepen">See the Pen <a href="https://codepen.io/liamelgie/pen/bvKMNd/">bvKMNd</a> by Liam (<a href="https://codepen.io/liamelgie">@liamelgie</a>) on <a href="https://codepen.io">CodePen</a>.</p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
     <p>First, create an instance of Waizatsu:
       <pre><code>const input = "Hello World";
 const garbler = new TextGarbler(input);</code></pre>
@@ -38,8 +36,14 @@ const garbler = new TextGarbler(input);</code></pre>
       <pre><code>garbler.garble();
 console.log(garbler.value);
 => "LafsK MpQJw"</code></pre>
+      <p data-height="234" data-theme-id="dark" data-slug-hash="bvKMNd" data-default-tab="js,result" data-user="liamelgie" data-embed-version="2" data-pen-title="Waizatsu - Hello World" class="codepen">See the Pen <a href="https://codepen.io/liamelgie/pen/bvKMNd/">Waizatsu - Hello World</a> by Liam (<a href="https://codepen.io/liamelgie">@liamelgie</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+      <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
     </p>
+    <h2>Events</h2>
+    <p data-height="250" data-theme-id="dark" data-slug-hash="qoypPy" data-default-tab="js,result" data-user="liamelgie" data-embed-version="2" data-pen-title="Waizatsu - Event Intro" class="codepen">See the Pen <a href="https://codepen.io/liamelgie/pen/qoypPy/">Waizatsu - Event Intro</a> by Liam (<a href="https://codepen.io/liamelgie">@liamelgie</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+    <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
     <h2>Repeater</h2>
+
     <p>Waizatsu's repeater feature allows you to repeatedly garble a string of text and transition it back to its original value on demand.<br />
       To start the repeater, call the `repeater.start` method:
       <pre><code>// Start the repeater
@@ -50,6 +54,8 @@ console.log(garbler.value);
 // Check the value again to see that it has changed
 console.log(garbler.value);
 => "KwiSH AKvys"</code></pre>
+      <p data-height="232" data-theme-id="dark" data-slug-hash="pLZpxw" data-default-tab="js,result" data-user="liamelgie" data-embed-version="2" data-pen-title="Waizatsu - Repeater Start" class="codepen">See the Pen <a href="https://codepen.io/liamelgie/pen/pLZpxw/">Waizatsu - Repeater Start</a> by Liam (<a href="https://codepen.io/liamelgie">@liamelgie</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+      <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
     </p>
     <p>To stop the repeater, call the `repeater.stop` method. Once called, the garbled value will transition to its original value:
       <pre><code>// Check the garbled value
@@ -60,5 +66,11 @@ garbler.repeater.stop();
 // Check the value again to see that it has transitioned
 console.log(garbler.value);
 => "Hello World"</code></pre>
+      <p data-height="332" data-theme-id="dark" data-slug-hash="eMjyQy" data-default-tab="js,result" data-user="liamelgie" data-embed-version="2" data-pen-title="Waizatsu - Repeater Stop" class="codepen">See the Pen <a href="https://codepen.io/liamelgie/pen/eMjyQy/">Waizatsu - Repeater Stop</a> by Liam (<a href="https://codepen.io/liamelgie">@liamelgie</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+      <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+    </p>
+  <h2>Putting It All Together</h2>
+  <p data-height="600" data-theme-id="dark" data-slug-hash="xWJpMy" data-default-tab="js,result" data-user="liamelgie" data-embed-version="2" data-pen-title="Waizatsu - Event Intro" class="codepen">See the Pen <a href="https://codepen.io/liamelgie/pen/xWJpMy/">Waizatsu - Event Intro</a> by Liam (<a href="https://codepen.io/liamelgie">@liamelgie</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+  <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
   </section>
 </body>
