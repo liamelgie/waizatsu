@@ -224,6 +224,14 @@ class TextGarbler {
     if (this.events.onGarble) this.events.onGarble();
     return;
   }
+
+  startRepeater() {
+    this.repeater.start();
+  }
+
+  stopRepeater() {
+    this.repeater.stop();
+  }
 }
 
 function generateRandomCharacter(characterSet) {
