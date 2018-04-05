@@ -58,11 +58,10 @@ class TextGarbler {
       refreshEvery: 50,
     }, options);
 
+    const CUSTOM = options.customCharacterSet;
     this.value;
     this.base = base;
     this.caseSensitive = options.caseSensitive;
-
-    const CUSTOM = options.customCharacterSet;
     this.characterSet = (() => {
       if (options.characterSet) {
         if (typeof options.characterSet === "object") {
@@ -94,7 +93,6 @@ class TextGarbler {
         }
       }
     })();
-
     this.events = {
       onGarble: () => {},
       onRepeaterStart: () => {},
@@ -102,7 +100,6 @@ class TextGarbler {
       onTransitionBegin: () => {},
       onTransitionEnd: () => {}
     }
-
     this.repeater = {
       isActive: false,
       milliseconds: options.refreshEvery,
