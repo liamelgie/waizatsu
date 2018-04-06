@@ -1,31 +1,45 @@
 # Waizatsu
-An efficient, easy-to-use text garbler, written in vanilla JS.
+A flexible and easy-to-use text garbler, written in pure JS.
 ## Features
-- Predefined and custom character sets
-- Stop garbling text on:
-    - Elapsed duration
-    - Fired event
-    - Called method
-- Transition effects
-
-## Usage
-#### HTML
+- Predefined and custom character sets:
+-- Alphabet (A, B, C...)
+-- Binary (0, 1)
+-- Numbers (0, 1, 3..)
+-- Symbols (#, @, ¬...)
+-- Emoji (😍, 🔥, 👸...)
+-- Chinese (格, 会, 趣...), Japanese (も, ち, や...), Korean (운, 용, 심...) [and CJK]
+- Automatically matches character types
+- Built-in interval repeatedly garbles the input at a given rate
+- Emmits events and supports callbacks on:
+-- Garble: When the input has been garbled
+-- RepeaterStart: When the built-in interval has started garbling the input
+-- RepeaterStop: When the built-in interval has stopped garbling the input
+-- TransitionBegin: When the garbled text begins to transition back to the input
+-- TransitionEnd: When the garbled text has finished its transition
+- Maintains case
+## Installing
+npm:
 ````
-<h1 id="example-element"></h1>
-`````
-#### JS
+npm install waizatsu
+````
+File include:
+Waizatsu supports the `import` syntax:
+````HTML
+<!-- index.html -->
+<script type="module" src="yourscript.js"></script>
+````
 ````Javascript
-let garble = new TextGarbler(
-  "example-element",
-  "Snape kills Dumbledore ",
-  {
-    transition: "reveal",
-    duration: 5000
-  }
-);
-garble.start();
+// yourscript.js
+import TextGarbler from 'waizatsu.min.js';
 ````
-#### Result
-<p align="center">
-  <img alt="Example Output" src="https://i.imgur.com/w7Fki9I.gif">
-</p>
+Targeting a browser without `Module` support? Include the following:
+````HTML
+<script nomodule src="waizatsu-fallback.js"></script>
+````
+## Hello World
+The following is the most simple use of Waizatsu:
+````Javascript
+const garbler = new TextGarbler("猥雑 Waizatsu");
+console.log(garbler.value);
+=> '趣갖 Vvfdeihm'
+````
