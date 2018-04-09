@@ -6,7 +6,7 @@ A flexible and easy-to-use text garbler, written in pure JS.
   * Binary (0, 1)
   * Numbers (0, 1, 2...)
   * Symbols (#, @, ¬...)
-  * Emoji (😍, 🔥, 👸...)
+  * Emoji (👸, 🔥, 😍...)
   * CJK (Chinese (格, 会, 趣...), Japanese (も, ち, や...), Korean (운, 용, 심...))
 * Automatically matches character types
 * Built-in interval repeatedly garbles the input at a given rate
@@ -75,15 +75,15 @@ The way in which a string is garbled relies on two things:
 #### Character Set
 When a string is garbled, each character within it will be replaced with a randomly selected character from a given set. The set used is determined by the `characterSet` option. If this option is not present, the character set is defaulted to `'alphabet'`.
 ##### Available Sets
-* Alphabet (A, B, C...) - Contains the characters found within the English alphabet. This set **does not** currently include accented characters.
-* Binary (0, 1) - Contains the binary numbers: 1 and 0.
-* Numbers (0, 1, 2...) - Contains the decimal digits: 0 to 9.
-* Symbols (#, @, ¬...) - Contains a variety of symbols that are commonly found on Western keyboards.
-* Emoji (😍, 🔥, 👸...) - Contains a variety of Emoji but is far from comprehensive.
-* Chinese (格, 会, 趣...) - Contains a variety of Chinese characters but is far from comprehensive.
-* Japanese (も, ち, や...) - Contains a variety of Japanese characters but is far from comprehensive.
-* Korean (운, 용, 심...) - Contains a variety of Korean characters but is not comprehensive.
-* CJK - A combination of the Chinese, Japanese and Korean sets
+* Alphabet (A, B, C...) 		- Contains the characters found within the English alphabet. This set **does not** currently include accented characters.
+* Binary (0, 1) 					- Contains the binary numbers: 1 and 0.
+* Numbers (0, 1, 2...) 		- Contains the decimal digits: 0 to 9.
+* Symbols (#, @, ¬...) 		- Contains a variety of symbols that are commonly found on Western keyboards.
+* Emoji (👸, 🔥, 😍...) 		- Contains a variety of Emoji but is far from comprehensive.
+* Chinese (格, 会, 趣...) 	- Contains a variety of Chinese characters but is far from comprehensive.
+* Japanese (も, ち, や...) 	- Contains a variety of Japanese characters but is far from comprehensive.
+* Korean (운, 용, 심...) 		- Contains a variety of Korean characters but is not comprehensive.
+* CJK 								- Contains a combination of the Chinese, Japanese and Korean sets
 ##### Custom
 A custom set of characters can be provided by the `customCharacterSet` option and can be selected by giving `'custom'` as the value for the `characterSet` option.
 ###### Example
