@@ -185,7 +185,7 @@ example.startRepeater();
 // Stop the Repeater
 example.stopRepeater();
 ````
-### Transition back to the `base`
+### Transitioning back to `base`
 When the Repeater is stopped, the object's `value` will begin to transition back to the `base` value that was given when the object was intiailised, one character at a time. In conjunction with the `garble` event, this provides a smooth transition between the two and acts as a sort of reveal. 
 
 > Currently, this transition cannot be triggered by anything other than the `Waizatsu.stopRepeater()` method and does not indepentently emit the `transitionEnd` event. This will be changed in a future revision.
