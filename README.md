@@ -30,7 +30,7 @@ Waizatsu supports the `import` syntax:
 ````
 ````Javascript
 // yourscript.js
-import TextGarbler from 'waizatsu.min.js';
+import Waizatsu from 'waizatsu.min.js';
 ````
 Targeting a browser without `Module` support? Include the following:
 ````HTML
@@ -39,7 +39,8 @@ Targeting a browser without `Module` support? Include the following:
 ## Hello World
 The following is the most simple use of Waizatsu:
 ````Javascript
-const garbler = new TextGarbler("猥雑 Waizatsu");
+const garbler = new Waizatsu("猥雑 Waizatsu");
 console.log(garbler.value);
 => '趣갖 Vvfdeihm'
 ````
+ 

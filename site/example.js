@@ -1,6 +1,6 @@
-import TextGarbler from '../src/waizatsu.js';
+import Waizatsu from '../src/waizatsu.js';
 
-const garbler = new TextGarbler(
+const garbler = new Waizatsu(
   "猥雑 Waizatsu",
   {
     refreshEvery: 40,

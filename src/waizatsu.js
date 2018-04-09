@@ -49,7 +49,7 @@ const KOREAN = ["百", "실", "로", "주", "며", "그", "들", "에", "게", "
 "거", "운", "지", "라"];
 const CJK = CHINESE.concat(JAPANESE, KOREAN);
 
-export default class TextGarbler {
+export default class Waizatsu {
   constructor(base, options) {
     options = Object.assign({}, {
       caseSensitive: false,
