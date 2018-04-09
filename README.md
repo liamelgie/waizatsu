@@ -7,7 +7,7 @@ A flexible and easy-to-use text garbler, written in pure JS.
   * Numbers (0, 1, 3..)
   * Symbols (#, @, ¬...)
   * Emoji (😍, 🔥, 👸...)
-  * Chinese (格, 会, 趣...), Japanese (も, ち, や...), Korean (운, 용, 심...) [and CJK]
+  * CJK (Chinese (格, 会, 趣...), Japanese (も, ち, や...), Korean (운, 용, 심...))
 * Automatically matches character types
 * Built-in interval repeatedly garbles the input at a given rate
 * Emmits events and supports callbacks on:
