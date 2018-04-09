@@ -193,9 +193,9 @@ export default class Waizatsu {
       let garbledCharacter;
       if (this.characterSet === AUTO) {
         garbledCharacter = /\s/.test(character) ? ' '
-          : /[0-1]/.test(character) ? generateRandomCharacter(BINARY)
-          : /[0-9]/.test(character) ? generateRandomCharacter(NUMBERS)
-          : /[-!$%^&*()_+|~=`{}\[\]:";'<>@?,.\/]/.test(character) ? generateRandomCharacter(SYMBOLS)
+          : BINARY.includes(character) ? generateRandomCharacter(BINARY)
+          : NUMBERS.includes(character) ? generateRandomCharacter(NUMBERS)
+          : SYMBOLS.includes(character) ? generateRandomCharacter(SYMBOLS)
           : /[^-!$%^&*()_+|~=`{}\[\]:";'<>@?,.\/\w\d\s]/.test(character) ? generateRandomCharacter(CJK)
           : generateRandomCharacter(ALPHABET);
       } else {
