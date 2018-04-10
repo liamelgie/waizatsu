@@ -49,6 +49,20 @@ const KOREAN = ["百", "실", "로", "주", "며", "그", "들", "에", "게", "
 "거", "운", "지", "라"];
 const CJK = CHINESE.concat(JAPANESE, KOREAN);
 
+const CHARACTER_SETS = {
+  AUTO: AUTO,
+  ALPHABET: ALPHABET,
+  BINARY: BINARY,
+  NUMBERS: NUMBERS,
+  EMOJI: EMOJI,
+  SYMBOLS: SYMBOLS,
+  CHINESE: CHINESE,
+  JAPANESE: JAPANESE,
+  KOREAN: KOREAN,
+  CJK: CJK,
+  CUSTOM: null
+};
+
 export default class Waizatsu {
   constructor(base, options) {
     options = Object.assign({}, {
@@ -59,6 +73,8 @@ export default class Waizatsu {
     }, options);
 
     const CUSTOM = options.customCharacterSet;
+    CHARACTER_SETS.CUSTOM = CUSTOM;
+
     this.value;
     this.base = base;
     this.caseSensitive = options.caseSensitive;
@@ -72,7 +88,7 @@ export default class Waizatsu {
               "CHINESE", "JAPANESE", "KOREAN", "CUSTOM"]
               .includes(set.toUpperCase())
             ) {
-              return (set === "AUTO") ? AUTO : combinedSet.concat((set.toUpperCase()));
+              return (set === "AUTO") ? AUTO : combinedSet.concat(CHARACTER_SETS[set.toUpperCase()]);
             }
           }
         } else if (typeof options.characterSet === "string") {
@@ -88,7 +104,7 @@ export default class Waizatsu {
             // Fallback to ALPHABET
             return ALPHABET;
           } else {
-            return (options.characterSet.toUpperCase());
+            return (CHARACTER_SETS[options.characterSet.toUpperCase()]);
           }
         }
       }
