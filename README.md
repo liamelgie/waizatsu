@@ -172,11 +172,15 @@ let example = new Waizatsu("Hello World!", { refreshEvery: 35 });
 example.startRepeater();
 ````
 ### Stopping the Repeater
-To stop the Repeater, call the `Waizatsu.stopRepeater()` method. This clears the interval that's set by the `Waizatsu.startRepeater()` method and transitions the garbled value back to the base value provided when the object was initialised.
+To stop the Repeater, call the `Waizatsu.stopRepeater()` method. This clears the interval that's set by the `Waizatsu.startRepeater()` method and transitions the garbled value back to the base value provided when the object was initialised. If you wish to retain the garbled value, see the `transition` parameter.
 
 Once the interval has been cleared, the `repeaterStop` event is emitted.
 
 > If `Waizatsu.stopRepeater()` is called while the Repeater is not active, it will return false.
+
+#### Parameters
+##### `transition`
+Boolean value that determines whether to transition the text back to it's `base` value once the interval has been cleared. Defaults to `true`.
 
 #### Example
 ````Javascript
@@ -196,9 +200,20 @@ This transition can be triggered independently via the `Waizatsu.transition()` a
 
 #### Example
 ````Javascript
-An example of the `Waizatsu.transition()` method.
-````
+// Create a new Waizatsu object
+let example = new Waizatsu("Hello World!");
+// Log the object's value to see that it's garbled
+console.log(example.value);
+// Transition back to the `base` value
+example.transition();
+// Log the object's value again to see that's transitioned
+console.log(example.value);
 
+// Console Output:
+'ld82N 9Und2&'
+'Hello World!'
+````
+Due to its nature, the above example shows how to use the `Waizatsu.transition()` method but not the effect it creates. To see this method in action, see [this page] (https://linktopage.com/examples "Waizatsu Examples").
 # Putting It All Together
 So, what can we do with Waizatsu? All it does is garble text, right? Maybe so but you can implement it into your apps in interesting ways.
 
