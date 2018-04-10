@@ -53,7 +53,7 @@ export default class Waizatsu {
   constructor(base, options) {
     options = Object.assign({}, {
       caseSensitive: false,
-      characterSet: "alphabet",
+      characterSet: "auto",
       customCharacterSet: [],
       refreshEvery: 50,
     }, options);
