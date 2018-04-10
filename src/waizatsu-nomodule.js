@@ -49,16 +49,32 @@ const KOREAN = ["百", "실", "로", "주", "며", "그", "들", "에", "게", "
 "거", "운", "지", "라"];
 const CJK = CHINESE.concat(JAPANESE, KOREAN);
 
+const CHARACTER_SETS = {
+  AUTO: AUTO,
+  ALPHABET: ALPHABET,
+  BINARY: BINARY,
+  NUMBERS: NUMBERS,
+  EMOJI: EMOJI,
+  SYMBOLS: SYMBOLS,
+  CHINESE: CHINESE,
+  JAPANESE: JAPANESE,
+  KOREAN: KOREAN,
+  CJK: CJK,
+  CUSTOM: null
+};
+
 class Waizatsu {
   constructor(base, options) {
     options = Object.assign({}, {
       caseSensitive: false,
-      characterSet: "alphabet",
+      characterSet: "auto",
       customCharacterSet: [],
       refreshEvery: 50,
     }, options);
 
     const CUSTOM = options.customCharacterSet;
+    CHARACTER_SETS.CUSTOM = CUSTOM;
+
     this.value;
     this.base = base;
     this.caseSensitive = options.caseSensitive;
@@ -66,29 +82,36 @@ class Waizatsu {
       if (options.characterSet) {
         if (typeof options.characterSet === "object") {
           let combinedSet = [];
-          for (let set of options.characterSet) {
+          for (const set of options.characterSet) {
             if (
               ["AUTO", "ALPHABET", "NUMBERS", "EMOJI", "BINARY", "SYMBOLS",
-              "CHINESE", "JAPANESE", "KOREAN", "CUSTOM"]
+              "CHINESE", "JAPANESE", "KOREAN", "CJK", "CUSTOM"]
               .includes(set.toUpperCase())
             ) {
-              return (set === "AUTO") ? AUTO : combinedSet.concat((set.toUpperCase()));
+              if (set.toUpperCase() === "AUTO") return AUTO;
+              combinedSet = combinedSet.concat(CHARACTER_SETS[set.toUpperCase()]);
+            } else {
+              console.error(`${set} is not a valid character set.
+              Use one of the following: \n
+              AUTO, ALPHABET, NUMBERS, EMOJI, BINARY, SYMBOLS, CHINESE, JAPANESE,
+              KOREAN, CJK or CUSTOM.`);
             }
           }
+          return combinedSet;
         } else if (typeof options.characterSet === "string") {
           if (!
             ["AUTO", "ALPHABET", "NUMBERS", "EMOJI", "BINARY", "SYMBOLS",
-            "CHINESE", "JAPANESE", "KOREAN", "CUSTOM"]
+            "CHINESE", "JAPANESE", "KOREAN", "CJK", "CUSTOM"]
             .includes(options.characterSet.toUpperCase())
           ) {
             console.error(`${options.characterSet} is not a valid character set.
             Use one of the following: \n
             AUTO, ALPHABET, NUMBERS, EMOJI, BINARY, SYMBOLS, CHINESE, JAPANESE,
-            KOREAN or CUSTOM.`);
+            KOREAN, CJK or CUSTOM.`);
             // Fallback to ALPHABET
-            return ALPHABET;
+            return (CHARACTER_SETS[ALPHABET]);
           } else {
-            return (options.characterSet.toUpperCase());
+            return (CHARACTER_SETS[options.characterSet.toUpperCase()]);
           }
         }
       }
