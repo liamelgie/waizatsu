@@ -118,7 +118,6 @@ export default class Waizatsu {
           clearInterval(this.repeater.interval);
           this.repeater.transition().then(() => {
             this.repeater.isActive = false;
-            if (this.events.onTransitionEnd) this.events.onTransitionEnd();
             return true;
           });
         } else {
@@ -126,26 +125,34 @@ export default class Waizatsu {
         }
       },
       transition: () => {
-        return new Promise(function(resolve, reject) {
+        return new Promise((resolve, reject) => {
           if (this.events.onTransitionBegin) this.events.onTransitionBegin();
-          let charactersRevealed = 0;
-          this.repeater.interval = setInterval(() => {
-            const splitbase = this.base.split('');
-            const splitGarbledString = this.garble(true, "array");
-            for (let i = 0; i < charactersRevealed; i++) {
-              splitGarbledString[i] = splitbase[i];
-            }
-            this.value = splitGarbledString.join('');
-            if (this.events.onGarble) this.events.onGarble();
-            charactersRevealed++;
-            if (charactersRevealed > this.base.length) {
-              clearInterval(this.repeater.interval);
-              this.value = this.base;
-              if (this.events.onGarble) this.events.onGarble();
-              resolve();
-            }
-          }, this.repeater.milliseconds);
-        }.bind(this));
+          const transitionEffect = (() => {
+            return new Promise((resolve, reject) => {
+              let charactersRevealed = 0;
+              this.repeater.interval = setInterval(() => {
+                const splitbase = this.base.split('');
+                const splitGarbledString = this.garble(true, "array");
+                for (let i = 0; i < charactersRevealed; i++) {
+                  splitGarbledString[i] = splitbase[i];
+                }
+                this.value = splitGarbledString.join('');
+                if (this.events.onGarble) this.events.onGarble();
+                charactersRevealed++;
+                if (charactersRevealed > this.base.length) {
+                  clearInterval(this.repeater.interval);
+                  this.value = this.base;
+                  if (this.events.onGarble) this.events.onGarble();
+                  resolve();
+                }
+              }, this.repeater.milliseconds);
+            });
+          });
+          transitionEffect().then(() => {
+            if (this.events.onTransitionEnd) this.events.onTransitionEnd();
+            resolve();
+          });
+        });
       }
     }
 
@@ -228,6 +235,10 @@ export default class Waizatsu {
 
   stopRepeater() {
     this.repeater.stop();
+  }
+
+  transition() {
+    this.repeater.transition();
   }
 }
 
