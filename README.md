@@ -213,7 +213,7 @@ console.log(example.value);
 'ld82N 9Und2&'
 'Hello World!'
 ````
-Due to its nature, the above example shows how to use the `Waizatsu.transition()` method but not the effect it creates. To see this method in action, see [this page] (https://linktopage.com/examples "Waizatsu Examples").
+Due to its nature, the above example shows how to use the `Waizatsu.transition()` method but not the effect it creates. To see this method in action, see [this page](https://linktopage.com/examples "Waizatsu Examples").
 # Putting It All Together
 So, what can we do with Waizatsu? All it does is garble text, right? Maybe so but you can implement it into your apps in interesting ways.
 
