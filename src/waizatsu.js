@@ -112,14 +112,18 @@ export default class Waizatsu {
         }, this.repeater.milliseconds);
         return;
       },
-      stop: () => {
+      stop: (transition=true) => {
         if (this.repeater.isActive) {
           if (this.events.onRepeaterStop) this.events.onRepeaterStop();
           clearInterval(this.repeater.interval);
-          this.repeater.transition().then(() => {
-            this.repeater.isActive = false;
+          if (transition) {
+            this.repeater.transition().then(() => {
+              this.repeater.isActive = false;
+              return true;
+            });
+          } else {
             return true;
-          });
+          }
         } else {
           return false;
         }
