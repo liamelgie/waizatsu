@@ -119,11 +119,9 @@ export default class Waizatsu {
           if (transition) {
             this.repeater.transition().then(() => {
               this.repeater.isActive = false;
-              return true;
             });
-          } else {
-            return true;
           }
+          return true;
         } else {
           return false;
         }
