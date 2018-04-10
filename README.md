@@ -83,7 +83,7 @@ When a string is garbled, each character within it will be replaced with a rando
 * Chinese (格, 会, 趣...) 	- Contains a variety of Chinese characters but is far from comprehensive.
 * Japanese (も, ち, や...) 	- Contains a variety of Japanese characters but is far from comprehensive.
 * Korean (운, 용, 심...) 		- Contains a variety of Korean characters but is not comprehensive.
-* CJK 								- Contains a combination of the Chinese, Japanese and Korean sets
+* CJK								- Contains a combination of the Chinese, Japanese and Korean sets
 ##### Custom
 A custom set of characters can be provided by the `customCharacterSet` option and can be selected by giving `'custom'` as the value for the `characterSet` option.
 ###### Example
@@ -158,6 +158,7 @@ example.garble();
 The Repeater feature is a built-in interval that (surprise) repeatedly garbles the text. This feature is functionally the same as creating an interval that calls the `Waizatsu.garble()` method but supports the aforementioned events and a nice transition back to the string's base value once stopped.
 ###  Starting the Repeater
 To start the Repeater, call the `Waizatsu.startRepeater()` method. This sets an interval that garbles the text every *x* milliseconds. The rate at which the interval executes is determined by the `refreshEvery` option. If this option is not present, the rate is defaulted to `50`. 
+
 Once the interval is set, the `repeaterStart` event is emitted.
 
 > If `Waizatsu.startRepeater()` is called while the Repeater is already active, the interval will be cleared and then set again. 
@@ -172,6 +173,7 @@ example.startRepeater();
 ````
 ### Stopping the Repeater
 To stop the Repeater, call the `Waizatsu.stopRepeater()` method. This clears the interval that's set by the `Waizatsu.startRepeater()` method and transitions the garbled value back to the base value provided when the object was initialised.
+
 Once the interval has been cleared, the `repeaterStop` event is emitted.
 
 > If `Waizatsu.stopRepeater()` is called while the Repeater is not active, it will return false.
@@ -188,7 +190,14 @@ example.stopRepeater();
 ### Transitioning back to `base`
 When the Repeater is stopped, the object's `value` will begin to transition back to the `base` value that was given when the object was intiailised, one character at a time. In conjunction with the `garble` event, this provides a smooth transition between the two and acts as a sort of reveal. 
 
-> Currently, this transition cannot be triggered by anything other than the `Waizatsu.stopRepeater()` method and does not indepentently emit the `transitionEnd` event. This will be changed in a future revision.
+Once the transition begins, the `transitionBegin` event is emitted. Once it completes, the `transitionEnd` event is emitted.
+
+This transition can be triggered independently via the `Waizatsu.transition()` alias.
+
+#### Example
+````Javascript
+An example of the `Waizatsu.transition()` method.
+````
 
 # Putting It All Together
 So, what can we do with Waizatsu? All it does is garble text, right? Maybe so but you can implement it into your apps in interesting ways.
