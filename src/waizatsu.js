@@ -85,24 +85,29 @@ export default class Waizatsu {
           for (let set of options.characterSet) {
             if (
               ["AUTO", "ALPHABET", "NUMBERS", "EMOJI", "BINARY", "SYMBOLS",
-              "CHINESE", "JAPANESE", "KOREAN", "CUSTOM"]
+              "CHINESE", "JAPANESE", "KOREAN", "CJK", "CUSTOM"]
               .includes(set.toUpperCase())
             ) {
               return (set === "AUTO") ? AUTO : combinedSet.concat(CHARACTER_SETS[set.toUpperCase()]);
+            } else {
+              console.error(`${set} is not a valid character set.
+              Use one of the following: \n
+              AUTO, ALPHABET, NUMBERS, EMOJI, BINARY, SYMBOLS, CHINESE, JAPANESE,
+              KOREAN, CJK or CUSTOM.`);
             }
           }
         } else if (typeof options.characterSet === "string") {
           if (!
             ["AUTO", "ALPHABET", "NUMBERS", "EMOJI", "BINARY", "SYMBOLS",
-            "CHINESE", "JAPANESE", "KOREAN", "CUSTOM"]
+            "CHINESE", "JAPANESE", "KOREAN", "CJK", "CUSTOM"]
             .includes(options.characterSet.toUpperCase())
           ) {
             console.error(`${options.characterSet} is not a valid character set.
             Use one of the following: \n
             AUTO, ALPHABET, NUMBERS, EMOJI, BINARY, SYMBOLS, CHINESE, JAPANESE,
-            KOREAN or CUSTOM.`);
+            KOREAN, CJK or CUSTOM.`);
             // Fallback to ALPHABET
-            return ALPHABET;
+            return (CHARACTER_SETS[ALPHABET]);
           } else {
             return (CHARACTER_SETS[options.characterSet.toUpperCase()]);
           }
