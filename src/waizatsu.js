@@ -82,13 +82,14 @@ export default class Waizatsu {
       if (options.characterSet) {
         if (typeof options.characterSet === "object") {
           let combinedSet = [];
-          for (let set of options.characterSet) {
+          for (const set of options.characterSet) {
             if (
               ["AUTO", "ALPHABET", "NUMBERS", "EMOJI", "BINARY", "SYMBOLS",
               "CHINESE", "JAPANESE", "KOREAN", "CJK", "CUSTOM"]
               .includes(set.toUpperCase())
             ) {
-              return (set === "AUTO") ? AUTO : combinedSet.concat(CHARACTER_SETS[set.toUpperCase()]);
+              if (set === "AUTO") return AUTO;
+              combinedSet = combinedSet.concat(CHARACTER_SETS[set.toUpperCase()]);
             } else {
               console.error(`${set} is not a valid character set.
               Use one of the following: \n
@@ -96,6 +97,7 @@ export default class Waizatsu {
               KOREAN, CJK or CUSTOM.`);
             }
           }
+          return combinedSet;
         } else if (typeof options.characterSet === "string") {
           if (!
             ["AUTO", "ALPHABET", "NUMBERS", "EMOJI", "BINARY", "SYMBOLS",
