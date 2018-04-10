@@ -180,7 +180,7 @@ Once the interval has been cleared, the `repeaterStop` event is emitted.
 
 #### Parameters
 ##### `transition`
-Boolean value that determines whether to transition the text back to it's `base` value once the interval has been cleared. Defaults to `true`.
+Boolean value that determines whether to transition the text back to its `base` value once the interval has been cleared. Defaults to `true`.
 
 #### Example
 ````Javascript
