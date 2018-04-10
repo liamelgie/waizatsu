@@ -88,7 +88,7 @@ export default class Waizatsu {
               "CHINESE", "JAPANESE", "KOREAN", "CJK", "CUSTOM"]
               .includes(set.toUpperCase())
             ) {
-              if (set === "AUTO") return AUTO;
+              if (set.toUpperCase() === "AUTO") return AUTO;
               combinedSet = combinedSet.concat(CHARACTER_SETS[set.toUpperCase()]);
             } else {
               console.error(`${set} is not a valid character set.
