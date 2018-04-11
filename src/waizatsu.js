@@ -63,7 +63,7 @@ const CHARACTER_SETS = {
   CUSTOM: null
 };
 
-export default class Waizatsu {
+class Waizatsu {
   constructor(base, options) {
     options = Object.assign({}, {
       caseSensitive: false,
