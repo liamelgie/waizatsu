@@ -22,8 +22,10 @@ npm:
 ````
 npm install waizatsu
 ````
-> Not yet published, bear with me 🐻
-
+````Javascript
+// yourscript.js
+const Waizatsu = require("waizatsu");
+````
 File include:
 Waizatsu supports the `import` syntax:
 ````HTML
@@ -38,7 +40,7 @@ Targeting a browser without `Module` support? Include the following:
 ````HTML
 <script nomodule src="waizatsu-fallback.js"></script>
 ````
-> Also not yet published 🐻
+> Not yet published, bear with me 🐻
 
 ## Hello World
 The following is the most simple use of Waizatsu:
