@@ -258,8 +258,8 @@ class Waizatsu {
     this.repeater.start();
   }
 
-  stopRepeater() {
-    this.repeater.stop();
+  stopRepeater(transition=true) {
+    this.repeater.stop(transition);
   }
 
   transition() {
