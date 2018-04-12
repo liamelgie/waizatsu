@@ -18,7 +18,7 @@ A flexible and easy-to-use text garbler, written in pure JS.
   * TransitionEnd: When the garbled text has finished its transition
 * Maintains case
 ## Installing
-npm:
+### npm
 ````
 npm install waizatsu
 ````
@@ -26,7 +26,7 @@ npm install waizatsu
 // yourscript.js
 const Waizatsu = require("waizatsu");
 ````
-File include:
+### File Include
 Waizatsu supports the `import` syntax:
 ````HTML
 <!-- index.html -->
@@ -34,13 +34,16 @@ Waizatsu supports the `import` syntax:
 ````
 ````Javascript
 // yourscript.js
-import Waizatsu from 'https://cdn.liamelgie.com/waizatsu/1.1.2/waizatsu.es.min.js';
+import Waizatsu from 'waizatsu.es.min.js';
 ````
-Targeting a browser without `Module` support? Include the following:
+
+> ES6 Modules are subject to the same-origin policy, therefore, they must be hosted locally
+
+Targeting browsers without `Module` support? Include the following:
 ````HTML
 <script nomodule src="https://cdn.liamelgie.com/waizatsu/1.1.2/waizatsu.min.js"></script>
 ````
-Prefer to host your dependencies locally? Download minified versions here:
+### Download
 
 [Waizatsu 1.1.2 with ES6 Module Support](https://cdn.liamelgie.com/waizatsu/1.1.2/waizatsu.es.min.js)
 
