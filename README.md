@@ -34,13 +34,15 @@ Waizatsu supports the `import` syntax:
 ````
 ````Javascript
 // yourscript.js
-import Waizatsu from 'waizatsu.min.js';
+import Waizatsu from 'https://cdn.liamelgie.com/waizatsu/1.1.2/waizatsu.es.min.js';
 ````
 Targeting a browser without `Module` support? Include the following:
 ````HTML
-<script nomodule src="waizatsu-fallback.js"></script>
+<script nomodule src="https://cdn.liamelgie.com/waizatsu/1.1.2/waizatsu.min.js"></script>
 ````
-> Not yet published, bear with me 🐻
+Rather host your dependencies locally? Download minified versions of Waizatsu:
+[Waizatsu 1.1.2 with ES6 Module Support]('https://cdn.liamelgie.com/waizatsu/1.1.2/waizatsu.es.min.js')
+[Waizatsu 1.1.2]('https://cdn.liamelgie.com/waizatsu/1.1.2/waizatsu.min.js')
 
 ## Hello World
 The following is the most simple use of Waizatsu:
