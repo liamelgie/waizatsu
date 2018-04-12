@@ -40,8 +40,10 @@ Targeting a browser without `Module` support? Include the following:
 ````HTML
 <script nomodule src="https://cdn.liamelgie.com/waizatsu/1.1.2/waizatsu.min.js"></script>
 ````
-Rather host your dependencies locally? Download minified versions here:
+Prefer to host your dependencies locally? Download minified versions here:
+
 [Waizatsu 1.1.2 with ES6 Module Support](https://cdn.liamelgie.com/waizatsu/1.1.2/waizatsu.es.min.js)
+
 [Waizatsu 1.1.2](https://cdn.liamelgie.com/waizatsu/1.1.2/waizatsu.min.js)
 
 ## Hello World
