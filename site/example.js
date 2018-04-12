@@ -3,8 +3,7 @@ import Waizatsu from '../src/waizatsu.js';
 const garbler = new Waizatsu(
   "猥雑 Waizatsu",
   {
-    refreshEvery: 40,
-    characterSet: "auto",
+    refreshEvery: 35,
     caseSensitive: true
   }
 );
@@ -20,6 +19,9 @@ garbler.on("garble", (value) => {
 });
 garbler.on("transitionBegin", () => {
   document.getElementById("example-element").classList.add("done");
+});
+garbler.on("transitionEnd", () => {
+  console.log("transition ended!");
 });
 document.getElementById("example-element").addEventListener("mouseenter", () => {
   garbler.stopRepeater();

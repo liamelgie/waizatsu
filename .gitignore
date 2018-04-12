@@ -1,5 +1,5 @@
 
 .DS_Store
-/npm/
-/lib/
-/site/
+/npm
+/lib
+/site
